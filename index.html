@@ -47,7 +47,7 @@
       transition: background 0.3s;
     }
     .header:hover {
-      background: #0f223a; /* حركة بسيطة عند المرور */
+      background: #0f223a;
     }
 
     .header-inner {
@@ -58,7 +58,7 @@
       gap: 16px;
     }
 
-    /* الشعار – صورة من Imgur + نص */
+    /* الشعار – صورة من Imgur + نص + تظليل خفيف */
     .logo {
       display: flex;
       align-items: center;
@@ -68,11 +68,19 @@
       letter-spacing: -0.5px;
       color: #f5d742;
       text-decoration: none;
+      /* تظليل اللوجو (ظل نص + ظل للصورة) */
+      text-shadow: 0 2px 8px rgba(245, 215, 66, 0.3);
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+      transition: filter 0.3s, text-shadow 0.3s;
+    }
+    .logo:hover {
+      filter: drop-shadow(0 6px 16px rgba(245, 215, 66, 0.45));
+      text-shadow: 0 4px 14px rgba(245, 215, 66, 0.5);
     }
     .logo img {
       height: 48px;
       width: auto;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
       transition: transform 0.3s ease;
     }
     .logo img:hover {
@@ -83,9 +91,10 @@
       font-weight: 300;
     }
 
-    /* شريط البحث */
+    /* شريط البحث – تحسين للجوال */
     .search-bar {
-      flex: 1 1 400px;
+      flex: 1 1 360px;
+      min-width: 160px;
       display: flex;
       background: #fff;
       border-radius: 60px;
@@ -100,21 +109,23 @@
     .search-bar input {
       flex: 1;
       border: none;
-      padding: 14px 22px;
+      padding: 14px 18px;
       font-size: 1rem;
       font-family: inherit;
       outline: none;
       background: transparent;
       color: #1e1e2a;
+      min-width: 80px;
     }
     .search-bar button {
       background: #f5d742;
       border: none;
-      padding: 0 28px;
-      font-size: 1.3rem;
+      padding: 0 22px;
+      font-size: 1.2rem;
       color: #0b1a2e;
       cursor: pointer;
       transition: 0.2s;
+      flex-shrink: 0;
     }
     .search-bar button:hover {
       background: #e5c42e;
@@ -204,7 +215,6 @@
       position: relative;
       overflow: hidden;
     }
-    /* خلفية متحركة (دوائر) */
     .hero::before {
       content: "🛋️🪑🛏️";
       position: absolute;
@@ -291,7 +301,6 @@
       animation: float 3s ease-in-out infinite;
     }
 
-    /* حركات */
     @keyframes fadeSlideUp {
       0% { opacity: 0; transform: translateY(30px); }
       100% { opacity: 1; transform: translateY(0); }
@@ -421,7 +430,6 @@
       transform: scale(1.15) rotate(4deg);
       color: #0b1a2e;
     }
-    /* خلفيات مختلفة للمنتجات (صور وهمية) */
     .product-card:nth-child(1) .product-img { background: #d9d0c0; }
     .product-card:nth-child(2) .product-img { background: #c7bdab; }
     .product-card:nth-child(3) .product-img { background: #ddd2c2; }
@@ -565,7 +573,7 @@
     }
 
     /* ============================================================
-       RESPONSIVE
+       RESPONSIVE – تحسينات خاصة بالجوال
        ============================================================ */
     @media (max-width: 800px) {
       .hero-text h1 {
@@ -574,34 +582,81 @@
       .header-inner {
         flex-direction: column;
         align-items: stretch;
+        gap: 12px;
       }
       .search-bar {
         width: 100%;
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      .search-bar input {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+      }
+      .search-bar button {
+        padding: 0 18px;
+        font-size: 1.1rem;
       }
       .logo img {
         height: 38px;
       }
+      .logo {
+        font-size: 1.6rem;
+        text-shadow: 0 2px 8px rgba(245, 215, 66, 0.3);
+        filter: drop-shadow(0 3px 8px rgba(0,0,0,0.3));
+      }
       .banner-mega h2 {
         font-size: 2rem;
+      }
+      .header-actions {
+        gap: 14px;
+        font-size: 1.1rem;
+        justify-content: flex-start;
+      }
+      .header-actions a span.badge {
+        font-size: 0.7rem;
+        padding: 0 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .search-bar input {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        min-width: 60px;
+      }
+      .search-bar button {
+        padding: 0 14px;
+        font-size: 1rem;
+      }
+      .logo {
+        font-size: 1.3rem;
+      }
+      .logo img {
+        height: 32px;
+      }
+      .header-actions {
+        gap: 10px;
+        font-size: 0.95rem;
+        flex-wrap: wrap;
+      }
+      .header-actions a i {
+        font-size: 1.1rem;
       }
     }
   </style>
 </head>
 <body>
 
-<!-- ============================================================
-     HTML (منفصل) – مع شرح لكل قسم
-     ============================================================ -->
-
 <!-- HEADER: شعار + بحث + أيقونات -->
 <header class="header">
   <div class="container header-inner">
-    <!-- الشعار: صورة من Imgur + نص -->
+    <!-- الشعار: صورة من Imgur + نص مع تظليل -->
     <a href="#" class="logo">
       <img src="https://imgur.com/rAnuXIA.png" alt="Mobitex Logo" onerror="this.src='https://via.placeholder.com/48?text=M'">
       <span>Mobitex</span><span>.sy</span>
     </a>
-    <!-- شريط بحث -->
+    <!-- شريط بحث – محسّن للجوال -->
     <div class="search-bar">
       <input type="text" placeholder="ابحث عن أثاث، موبيليا، غرف نوم...">
       <button><i class="fas fa-search"></i></button>
@@ -746,7 +801,6 @@
       products.forEach(p => {
         const card = document.createElement('div');
         card.className = 'product-card';
-        // إضافة صور عبر أيقونات (مع خلفيات مختلفة في CSS)
         card.innerHTML = `
           <div class="product-img"><i class="fas ${p.icon}"></i></div>
           <div class="product-info">
@@ -761,14 +815,11 @@
     }
 
     // 3. تفاعلات وحركات إضافية
-
-    // 3.a عند النقر على زر "تسوّق الآن" في الهيرو
     const ctaBtn = document.querySelector('.hero-cta .btn-gold');
     if (ctaBtn) {
       ctaBtn.addEventListener('click', function(e) {
         e.preventDefault();
         alert('🚀 مرحباً بك في Mobitex · أكبر سوق للموبيليا السورية!');
-        // حركة بسيطة: تغيير لون الزر مؤقتاً
         this.style.backgroundColor = '#fff';
         this.style.color = '#0b1a2e';
         setTimeout(() => {
@@ -778,12 +829,9 @@
       });
     }
 
-    // 3.b إضافة تأثير عند تمرير الفأرة على أي بطاقة منتج (تم في CSS)
-    // 3.c إضافة رسالة ترحيبية في الكونسول
     console.log('🛋️ Mobitex · سوريا · أكبر سوق للموبيليا والمفروشات');
     console.log('📌 تم إضافة صور (أيقونات) وحركات وتفاعلات بنجاح!');
 
-    // 3.d إضافة تأثير كتابة في شريط البحث (توضيح)
     const searchInput = document.querySelector('.search-bar input');
     if (searchInput) {
       searchInput.addEventListener('focus', function() {
