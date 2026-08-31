@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Mobitex · سوق الموبيليا السورية</title>
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       CSS (منفصل) – مع شرح لكل قسم
+       ============================================================ */
+
+    /* 1. إعادة ضبط عامة + الخط الأساسي */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Almarai', 'Segoe UI', sans-serif;
+      background: #f7f5f0;
+      color: #1e1e2a;
+      line-height: 1.5;
+    }
+
+    /* حاوية مركزية عريضة */
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ============================================================
+       HEADER – شريط علوي مع شعار وصور
+       ============================================================ */
+    .header {
+      background: #0b1a2e;
+      color: #f0ede8;
+      padding: 12px 0;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background 0.3s;
+    }
+    .header:hover {
+      background: #0f223a; /* حركة بسيطة عند المرور */
+    }
+
+    .header-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    /* الشعار – صورة من Imgur + نص */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #f5d742;
+      text-decoration: none;
+    }
+    .logo img {
+      height: 48px;
+      width: auto;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+      transition: transform 0.3s ease;
+    }
+    .logo img:hover {
+      transform: scale(1.08) rotate(-2deg);
+    }
+    .logo span {
+      color: #fff;
+      font-weight: 300;
+    }
+
+    /* شريط البحث */
+    .search-bar {
+      flex: 1 1 400px;
+      display: flex;
+      background: #fff;
+      border-radius: 60px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: box-shadow 0.3s, transform 0.2s;
+    }
+    .search-bar:focus-within {
+      box-shadow: 0 4px 20px rgba(245, 215, 66, 0.3);
+      transform: scale(1.01);
+    }
+    .search-bar input {
+      flex: 1;
+      border: none;
+      padding: 14px 22px;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      background: transparent;
+      color: #1e1e2a;
+    }
+    .search-bar button {
+      background: #f5d742;
+      border: none;
+      padding: 0 28px;
+      font-size: 1.3rem;
+      color: #0b1a2e;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .search-bar button:hover {
+      background: #e5c42e;
+      transform: scale(1.05);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 20px;
+      font-size: 1.3rem;
+    }
+    .header-actions a {
+      color: #f0ede8;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 400;
+      transition: 0.2s;
+      position: relative;
+    }
+    .header-actions a:hover {
+      color: #f5d742;
+      transform: translateY(-2px);
+    }
+    .badge {
+      background: #f5d742;
+      color: #0b1a2e;
+      border-radius: 40px;
+      padding: 0 10px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: 0.2s;
+    }
+    .header-actions a:hover .badge {
+      background: #fff;
+    }
+
+    /* ============================================================
+       NAV – قائمة تنقل رئيسية
+       ============================================================ */
+    .main-nav {
+      background: #ffffff;
+      border-bottom: 1px solid #e9e3d9;
+      padding: 10px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      gap: 28px;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #1e1e2a;
+      transition: 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-links a i {
+      color: #b09b7e;
+      transition: 0.25s;
+    }
+    .nav-links a:hover {
+      color: #b68b40;
+      border-bottom-color: #f5d742;
+      transform: translateY(-2px);
+    }
+    .nav-links a:hover i {
+      color: #f5d742;
+    }
+
+    /* ============================================================
+       HERO – قسم الترحيب الكبير مع صور (أيقونات كصور)
+       ============================================================ */
+    .hero {
+      background: linear-gradient(145deg, #e6dfd3, #f7f2ea);
+      padding: 48px 0 56px;
+      border-radius: 0 0 60px 60px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* خلفية متحركة (دوائر) */
+    .hero::before {
+      content: "🛋️🪑🛏️";
+      position: absolute;
+      font-size: 12rem;
+      opacity: 0.04;
+      left: -20px;
+      top: -40px;
+      transform: rotate(-10deg);
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-text {
+      flex: 1 1 400px;
+      animation: fadeSlideUp 1s ease;
+    }
+    .hero-text h1 {
+      font-size: 3.8rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: #0b1a2e;
+    }
+    .hero-text h1 i {
+      color: #b68b40;
+    }
+    .hero-text p {
+      font-size: 1.2rem;
+      color: #3e3a4a;
+      margin: 16px 0 24px;
+      max-width: 500px;
+    }
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 38px;
+      border-radius: 60px;
+      font-weight: 700;
+      background: #0b1a2e;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+      border: none;
+      font-size: 1rem;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .btn:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+    .btn-gold {
+      background: #f5d742;
+      color: #0b1a2e;
+    }
+    .btn-gold:hover {
+      background: #e0c12e;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #0b1a2e;
+      color: #0b1a2e;
+    }
+    .btn-outline:hover {
+      background: #0b1a2e;
+      color: #fff;
+    }
+    .hero-image {
+      flex: 1 1 300px;
+      text-align: center;
+      font-size: 9rem;
+      color: #b09b7e;
+      opacity: 0.8;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* حركات */
+    @keyframes fadeSlideUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* ============================================================
+       SECTION TITLE
+       ============================================================ */
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin: 50px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title i {
+      color: #b68b40;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    /* ============================================================
+       CATEGORIES – مع صور (أيقونات)
+       ============================================================ */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .category-card {
+      background: #fff;
+      padding: 28px 12px;
+      border-radius: 40px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.02);
+      transition: 0.3s;
+      border: 1px solid #f0ebe2;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+    .category-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f5d74222, transparent);
+      opacity: 0;
+      transition: 0.4s;
+    }
+    .category-card:hover::after {
+      opacity: 1;
+    }
+    .category-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+      border-color: #dacfbc;
+    }
+    .category-card i {
+      font-size: 3.2rem;
+      color: #0b1a2e;
+      margin-bottom: 8px;
+      transition: 0.3s;
+    }
+    .category-card:hover i {
+      transform: rotate(6deg) scale(1.1);
+      color: #b68b40;
+    }
+    .category-card h4 {
+      font-weight: 700;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============================================================
+       PRODUCTS – بطاقات ضخمة مع صور (أيقونات + خلفيات)
+       ============================================================ */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 28px;
+      margin: 30px 0 50px;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.03);
+      transition: 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+      border: 1px solid #ece6dc;
+      position: relative;
+    }
+    .product-card:hover {
+      transform: scale(1.02) translateY(-8px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.08);
+      border-color: #b68b40;
+    }
+    .product-img {
+      background: #e9e1d4;
+      height: 210px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      color: #6a5e4b;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-img i {
+      transition: 0.5s;
+    }
+    .product-card:hover .product-img i {
+      transform: scale(1.15) rotate(4deg);
+      color: #0b1a2e;
+    }
+    /* خلفيات مختلفة للمنتجات (صور وهمية) */
+    .product-card:nth-child(1) .product-img { background: #d9d0c0; }
+    .product-card:nth-child(2) .product-img { background: #c7bdab; }
+    .product-card:nth-child(3) .product-img { background: #ddd2c2; }
+    .product-card:nth-child(4) .product-img { background: #d2c8b8; }
+    .product-card:nth-child(5) .product-img { background: #e0d6c6; }
+    .product-card:nth-child(6) .product-img { background: #ccc2b0; }
+    .product-card:nth-child(7) .product-img { background: #d6ccbb; }
+    .product-card:nth-child(8) .product-img { background: #cbc0ad; }
+    .product-card:nth-child(9) .product-img { background: #dfd5c5; }
+    .product-card:nth-child(10) .product-img { background: #d3c9b9; }
+    .product-card:nth-child(11) .product-img { background: #cbbfae; }
+    .product-card:nth-child(12) .product-img { background: #d8cebe; }
+
+    .product-info {
+      padding: 20px 22px 26px;
+    }
+    .product-info h3 {
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+    .product-info .price {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #0b1a2e;
+      margin: 8px 0 4px;
+    }
+    .product-info .price small {
+      font-weight: 400;
+      font-size: 0.9rem;
+      color: #6a5e4b;
+    }
+    .product-info .location {
+      color: #6a5e4b;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .product-tag {
+      background: #f5d742;
+      padding: 4px 18px;
+      border-radius: 60px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      display: inline-block;
+      margin-top: 10px;
+      transition: 0.25s;
+    }
+    .product-card:hover .product-tag {
+      background: #0b1a2e;
+      color: #f5d742;
+    }
+
+    /* ============================================================
+       BANNER عملاق مع حركة
+       ============================================================ */
+    .banner-mega {
+      background: #0b1a2e;
+      color: #f0ede8;
+      padding: 48px 40px;
+      border-radius: 60px;
+      margin: 40px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      transition: 0.4s;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+    .banner-mega:hover {
+      transform: scale(1.01);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.3);
+    }
+    .banner-mega h2 {
+      font-size: 2.6rem;
+      font-weight: 800;
+    }
+    .banner-mega h2 i {
+      color: #f5d742;
+    }
+    .banner-mega .btn {
+      background: #f5d742;
+      color: #0b1a2e;
+      font-size: 1.2rem;
+      padding: 16px 50px;
+    }
+    .banner-mega .btn:hover {
+      background: #fff;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      background: #0b1a2e;
+      color: #cbc6bc;
+      padding: 50px 0 30px;
+      margin-top: 60px;
+      border-radius: 60px 60px 0 0;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 40px;
+    }
+    .footer h4 {
+      color: #fff;
+      margin-bottom: 16px;
+      font-size: 1.2rem;
+    }
+    .footer a {
+      color: #cbc6bc;
+      text-decoration: none;
+      display: block;
+      margin: 8px 0;
+      transition: 0.25s;
+    }
+    .footer a:hover {
+      color: #f5d742;
+      transform: translateX(-6px);
+    }
+    .footer .social {
+      display: flex;
+      gap: 20px;
+      font-size: 1.8rem;
+    }
+    .footer .social a {
+      display: inline-block;
+      transition: 0.3s;
+    }
+    .footer .social a:hover {
+      transform: translateY(-6px) rotate(4deg);
+      color: #f5d742;
+    }
+    .footer-bottom {
+      border-top: 1px solid #2a384a;
+      margin-top: 40px;
+      padding-top: 28px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 800px) {
+      .hero-text h1 {
+        font-size: 2.4rem;
+      }
+      .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-bar {
+        width: 100%;
+      }
+      .logo img {
+        height: 38px;
+      }
+      .banner-mega h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HTML (منفصل) – مع شرح لكل قسم
+     ============================================================ -->
+
+<!-- HEADER: شعار + بحث + أيقونات -->
+<header class="header">
+  <div class="container header-inner">
+    <!-- الشعار: صورة من Imgur + نص -->
+    <a href="#" class="logo">
+      <img src="https://imgur.com/rAnuXIA.png" alt="Mobitex Logo" onerror="this.src='https://via.placeholder.com/48?text=M'">
+      <span>Mobitex</span><span>.sy</span>
+    </a>
+    <!-- شريط بحث -->
+    <div class="search-bar">
+      <input type="text" placeholder="ابحث عن أثاث، موبيليا، غرف نوم...">
+      <button><i class="fas fa-search"></i></button>
+    </div>
+    <!-- أيقونات المستخدم -->
+    <div class="header-actions">
+      <a href="#"><i class="far fa-heart"></i> <span class="badge">12</span></a>
+      <a href="#"><i class="far fa-user"></i> حسابي</a>
+      <a href="#"><i class="fas fa-cart-shopping"></i> <span class="badge">3</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- NAV: قائمة التنقل -->
+<nav class="main-nav">
+  <div class="container">
+    <ul class="nav-links">
+      <li><a href="#"><i class="fas fa-th-large"></i> جميع الأقسام</a></li>
+      <li><a href="#"><i class="fas fa-chair"></i> غرف جلوس</a></li>
+      <li><a href="#"><i class="fas fa-bed"></i> غرف نوم</a></li>
+      <li><a href="#"><i class="fas fa-utensils"></i> مطابخ</a></li>
+      <li><a href="#"><i class="fas fa-lightbulb"></i> إضاءة</a></li>
+      <li><a href="#"><i class="fas fa-tag"></i> عروض خاصّة</a></li>
+      <li><a href="#"><i class="fas fa-store"></i> متاجر</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO: ترحيب وصورة متحركة -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <h1>أكبر سوق <i>للموبيليا</i> في سوريا</h1>
+      <p>اكتشف آلاف القطع الفريدة من أفضل المصممين والحرفيين السوريين. أثاث منزلك يروي قصتك.</p>
+      <div class="hero-cta">
+        <a href="#" class="btn btn-gold"><i class="fas fa-store"></i> تسوّق الآن</a>
+        <a href="#" class="btn btn-outline"><i class="fas fa-camera"></i> تصفّح المعرض</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <i class="fas fa-couch"></i>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES: تصنيفات مع صور (أيقونات) -->
+<div class="container">
+  <div class="section-title"><i class="fas fa-grid-2"></i> تصنيفات ضخمة</div>
+  <div class="categories-grid">
+    <div class="category-card"><i class="fas fa-couch"></i><h4>كنب وكراسي</h4></div>
+    <div class="category-card"><i class="fas fa-bed"></i><h4>غرف نوم</h4></div>
+    <div class="category-card"><i class="fas fa-utensils"></i><h4>طاولات طعام</h4></div>
+    <div class="category-card"><i class="fas fa-draw-polygon"></i><h4>مكاتب</h4></div>
+    <div class="category-card"><i class="fas fa-lamp"></i><h4>إضاءة ديكورية</h4></div>
+    <div class="category-card"><i class="fas fa-rug"></i><h4>سجاد ومفروشات</h4></div>
+    <div class="category-card"><i class="fas fa-door-open"></i><h4>أبواب وخزائن</h4></div>
+    <div class="category-card"><i class="fas fa-palette"></i><h4>قطع فنية</h4></div>
+  </div>
+
+  <!-- PRODUCTS: تشكيلة ضخمة مع صور (أيقونات) -->
+  <div class="section-title"><i class="fas fa-star"></i> أحدث الإضافات · تشكيلة ضخمة</div>
+  <div class="products-grid" id="productGrid">
+    <!-- يتم إضافة المنتجات بواسطة JS (انظر أدناه) -->
+  </div>
+
+  <!-- BANNER عملاق مع حركة -->
+  <div class="banner-mega">
+    <div>
+      <h2><i class="fas fa-trophy"></i> أكبر معرض للموبيليا السورية</h2>
+      <p style="font-size: 1.1rem; margin-top: 6px;">أكثر من 5000 قطعة · أثاث مصنوع بأيدي سورية</p>
+    </div>
+    <a href="#" class="btn">استكشف الكتالوج <i class="fas fa-arrow-left"></i></a>
+  </div>
+</div>
+
+<!-- FOOTER: تذييل شامل -->
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <h4>Mobitex</h4>
+      <p style="margin-bottom: 12px;">أكبر منصة للموبيليا والمفروشات في سوريا، نجمع بين الجودة والتراث.</p>
+      <div class="social">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div>
+      <h4>روابط سريعة</h4>
+      <a href="#">جميع الأقسام</a>
+      <a href="#">عروض اليوم</a>
+      <a href="#">متاجر موثوقة</a>
+      <a href="#">طلب مخصص</a>
+    </div>
+    <div>
+      <h4>الدعم</h4>
+      <a href="#">مركز المساعدة</a>
+      <a href="#">سياسة الإرجاع</a>
+      <a href="#">الشحن والتوصيل</a>
+      <a href="#">تواصل معنا</a>
+    </div>
+    <div>
+      <h4>حسابي</h4>
+      <a href="#">تسجيل الدخول</a>
+      <a href="#">إنشاء حساب</a>
+      <a href="#">قائمة رغباتي</a>
+      <a href="#">طلباتي</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    &copy; 2026 Mobitex · سوق الموبيليا السورية — كل الحقوق محفوظة
+  </div>
+</footer>
+
+<!-- ============================================================
+     JS (منفصل) – مع شرح لكل دالة
+     ============================================================ -->
+<script>
+  (function() {
+    "use strict";
+
+    // 1. بيانات المنتجات (صور وهمية عبر أيقونات FontAwesome)
+    const products = [
+      { name: 'كنب كلاسيكي فخم', price: '2,450,000', location: 'دمشق', icon: 'fa-couch', tag: 'حصري' },
+      { name: 'غرفة نوم مودرن', price: '4,200,000', location: 'حلب', icon: 'fa-bed', tag: 'تخفيض' },
+      { name: 'طاولة طعام رخام', price: '3,150,000', location: 'اللاذقية', icon: 'fa-utensils', tag: 'أفضل جودة' },
+      { name: 'خزانة ملابس كبيرة', price: '2,800,000', location: 'حمص', icon: 'fa-door-open', tag: 'صناعة سورية' },
+      { name: 'أريكة زاوية مخمل', price: '3,900,000', location: 'دمشق', icon: 'fa-couch', tag: 'فاخر' },
+      { name: 'مكتب قائد مع كرسي', price: '1,850,000', location: 'طرطوس', icon: 'fa-draw-polygon', tag: 'عصري' },
+      { name: 'سجادة يدوية ناعمة', price: '980,000', location: 'حلب', icon: 'fa-rug', tag: 'طبيعي' },
+      { name: 'كرسي هزاز خشبي', price: '1,250,000', location: 'السويداء', icon: 'fa-chair', tag: 'كلاسيكي' },
+      { name: 'طقم إضاءة ديكور', price: '730,000', location: 'دمشق', icon: 'fa-lamp', tag: 'حديث' },
+      { name: 'مرآة ضخمة بإطار', price: '1,100,000', location: 'اللاذقية', icon: 'fa-palette', tag: 'أنيق' },
+      { name: 'كنب 3 مقاعد جلد', price: '3,700,000', location: 'حمص', icon: 'fa-couch', tag: 'عرض خاص' },
+      { name: 'غرفة أطفال متكاملة', price: '2,950,000', location: 'دمشق', icon: 'fa-bed', tag: 'ألوان زاهية' }
+    ];
+
+    // 2. عرض المنتجات في الشبكة
+    const grid = document.getElementById('productGrid');
+    if (grid) {
+      products.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        // إضافة صور عبر أيقونات (مع خلفيات مختلفة في CSS)
+        card.innerHTML = `
+          <div class="product-img"><i class="fas ${p.icon}"></i></div>
+          <div class="product-info">
+            <h3>${p.name}</h3>
+            <div class="price">${p.price} <small>ل.س</small></div>
+            <div class="location"><i class="fas fa-map-pin"></i> ${p.location}</div>
+            <span class="product-tag">${p.tag}</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // 3. تفاعلات وحركات إضافية
+
+    // 3.a عند النقر على زر "تسوّق الآن" في الهيرو
+    const ctaBtn = document.querySelector('.hero-cta .btn-gold');
+    if (ctaBtn) {
+      ctaBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        alert('🚀 مرحباً بك في Mobitex · أكبر سوق للموبيليا السورية!');
+        // حركة بسيطة: تغيير لون الزر مؤقتاً
+        this.style.backgroundColor = '#fff';
+        this.style.color = '#0b1a2e';
+        setTimeout(() => {
+          this.style.backgroundColor = '';
+          this.style.color = '';
+        }, 300);
+      });
+    }
+
+    // 3.b إضافة تأثير عند تمرير الفأرة على أي بطاقة منتج (تم في CSS)
+    // 3.c إضافة رسالة ترحيبية في الكونسول
+    console.log('🛋️ Mobitex · سوريا · أكبر سوق للموبيليا والمفروشات');
+    console.log('📌 تم إضافة صور (أيقونات) وحركات وتفاعلات بنجاح!');
+
+    // 3.d إضافة تأثير كتابة في شريط البحث (توضيح)
+    const searchInput = document.querySelector('.search-bar input');
+    if (searchInput) {
+      searchInput.addEventListener('focus', function() {
+        this.placeholder = '🔍 ابحث عن كنبة، غرفة نوم، أو مطبخ...';
+      });
+      searchInput.addEventListener('blur', function() {
+        this.placeholder = 'ابحث عن أثاث، موبيليا، غرف نوم...';
+      });
+    }
+
+  })();
+</script>
+
+</body>
+</html>
