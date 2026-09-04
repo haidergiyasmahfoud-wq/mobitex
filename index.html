@@ -1,849 +1,3184 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Mobitex · سوق الموبيليا السورية</title>
-  <!-- Font & Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
-  <style>
-    /* ============================================================
-       CSS (منفصل) – مع شرح لكل قسم
-       ============================================================ */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>mobitex - أكبر سوق للموبيليا والمفروشات السورية</title>
+    <meta name="description" content="اكتشف أفضل محلات الموبيليا والمفروشات في سوريا - دليل شامل لأكثر من 7000 محل في 14 محافظة">
+    
+    <!-- ============ META TAGS ============ -->
+    <meta property="og:title" content="mobitex - سوق الموبيليا والمفروشات في سوريا">
+    <meta property="og:description" content="اكتشف أفضل محلات المفروشات في سوريا - 7000+ محل في 14 محافظة">
+    <meta property="og:image" content="https://imgur.com/qxbKmUp.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebSite","name":"mobitex","url":"https://mobitex.today/","description":"دليل المفروشات الشامل في سوريا"}
+    </script>
 
-    /* 1. إعادة ضبط عامة + الخط الأساسي */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <!-- ============ STYLES ============ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    body {
-      font-family: 'Almarai', 'Segoe UI', sans-serif;
-      background: #f7f5f0;
-      color: #1e1e2a;
-      line-height: 1.5;
-    }
+    <style>
+        /* ============ CSS VARIABLES ============ */
+        :root {
+            --primary: #2D6FAF;
+            --primary-dark: #1A4A7A;
+            --primary-light: #4A90D9;
+            --secondary: #E8C872;
+            --accent: #06D6A0;
+            --bg: #F5F7FA;
+            --bg-card: #FFFFFF;
+            --bg-input: #EDF1F5;
+            --text: #2D3436;
+            --text-secondary: #6B7A8A;
+            --border: rgba(0,0,0,0.08);
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow: 0 15px 35px rgba(0,0,0,0.08);
+            --shadow-hover: 0 25px 45px rgba(0,0,0,0.12);
+            --shadow-primary: 0 15px 35px rgba(45, 111, 175, 0.3);
+            --info-bg: #E8F0FE;
+            --header-bg: rgba(245,247,250,0.98);
+            --radius-sm: 12px;
+            --radius: 20px;
+            --radius-lg: 25px;
+            --radius-xl: 30px;
+            --header-height: 64px;
+            --header-height-desktop: 76px;
+            --favorite-color: #E85D04;
+            --star-color: #FFBA08;
+            --gradient-bg: linear-gradient(-45deg, #F0F4F8, #E8EEF5, #F5F7FA, #E0E8F0);
+        }
 
-    /* حاوية مركزية عريضة */
-    .container {
-      max-width: 1600px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+        [data-theme="dark"] {
+            --bg: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-input: #1a1a2e;
+            --text: #e0e0e0;
+            --text-secondary: #aaa;
+            --border: rgba(255,255,255,0.1);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow: 0 10px 30px rgba(0,0,0,0.4);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.5);
+            --shadow-primary: 0 15px 35px rgba(45, 111, 175, 0.2);
+            --info-bg: #1a2744;
+            --header-bg: rgba(22,33,62,0.98);
+            --gradient-bg: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
+        }
 
-    /* ============================================================
-       HEADER – شريط علوي مع شعار وصور
-       ============================================================ */
-    .header {
-      background: #0b1a2e;
-      color: #f0ede8;
-      padding: 12px 0;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      transition: background 0.3s;
-    }
-    .header:hover {
-      background: #0f223a;
-    }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    .header-inner {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.4s, color 0.4s;
+        }
 
-    /* الشعار – صورة من Imgur + نص + تظليل خفيف */
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.9rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: #f5d742;
-      text-decoration: none;
-      /* تظليل اللوجو (ظل نص + ظل للصورة) */
-      text-shadow: 0 2px 8px rgba(245, 215, 66, 0.3);
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
-      transition: filter 0.3s, text-shadow 0.3s;
-    }
-    .logo:hover {
-      filter: drop-shadow(0 6px 16px rgba(245, 215, 66, 0.45));
-      text-shadow: 0 4px 14px rgba(245, 215, 66, 0.5);
-    }
-    .logo img {
-      height: 48px;
-      width: auto;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
-      transition: transform 0.3s ease;
-    }
-    .logo img:hover {
-      transform: scale(1.08) rotate(-2deg);
-    }
-    .logo span {
-      color: #fff;
-      font-weight: 300;
-    }
+        .animated-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: var(--gradient-bg);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            transition: background 0.4s;
+        }
+        @keyframes gradientBG { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 
-    /* شريط البحث – تحسين للجوال */
-    .search-bar {
-      flex: 1 1 360px;
-      min-width: 160px;
-      display: flex;
-      background: #fff;
-      border-radius: 60px;
-      overflow: hidden;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      transition: box-shadow 0.3s, transform 0.2s;
-    }
-    .search-bar:focus-within {
-      box-shadow: 0 4px 20px rgba(245, 215, 66, 0.3);
-      transform: scale(1.01);
-    }
-    .search-bar input {
-      flex: 1;
-      border: none;
-      padding: 14px 18px;
-      font-size: 1rem;
-      font-family: inherit;
-      outline: none;
-      background: transparent;
-      color: #1e1e2a;
-      min-width: 80px;
-    }
-    .search-bar button {
-      background: #f5d742;
-      border: none;
-      padding: 0 22px;
-      font-size: 1.2rem;
-      color: #0b1a2e;
-      cursor: pointer;
-      transition: 0.2s;
-      flex-shrink: 0;
-    }
-    .search-bar button:hover {
-      background: #e5c42e;
-      transform: scale(1.05);
-    }
+        .floating-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        .shape {
+            position: absolute; border-radius: 50%;
+            animation: float 20s infinite;
+            background: rgba(45,111,175,0.08);
+        }
+        [data-theme="dark"] .shape { background: rgba(45,111,175,0.04); }
+        @keyframes float { 0%,100%{transform:translateY(0) rotate(0deg)} 25%{transform:translateX(15px)} 50%{transform:translateY(-80px) rotate(180deg)} 75%{transform:translateX(-15px)} }
 
-    .header-actions {
-      display: flex;
-      gap: 20px;
-      font-size: 1.3rem;
-    }
-    .header-actions a {
-      color: #f0ede8;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 400;
-      transition: 0.2s;
-      position: relative;
-    }
-    .header-actions a:hover {
-      color: #f5d742;
-      transform: translateY(-2px);
-    }
-    .badge {
-      background: #f5d742;
-      color: #0b1a2e;
-      border-radius: 40px;
-      padding: 0 10px;
-      font-size: 0.75rem;
-      font-weight: 800;
-      transition: 0.2s;
-    }
-    .header-actions a:hover .badge {
-      background: #fff;
-    }
+        /* ============ PROGRESS BAR ============ */
+        #progressBar {
+            position: fixed; top: 0; left: 0; width: 0%; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: 99999; transition: width 0.3s ease;
+        }
 
-    /* ============================================================
-       NAV – قائمة تنقل رئيسية
-       ============================================================ */
-    .main-nav {
-      background: #ffffff;
-      border-bottom: 1px solid #e9e3d9;
-      padding: 10px 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      list-style: none;
-      gap: 28px;
-      font-weight: 700;
-      font-size: 1rem;
-    }
-    .nav-links a {
-      text-decoration: none;
-      color: #1e1e2a;
-      transition: 0.25s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 0;
-      border-bottom: 2px solid transparent;
-    }
-    .nav-links a i {
-      color: #b09b7e;
-      transition: 0.25s;
-    }
-    .nav-links a:hover {
-      color: #b68b40;
-      border-bottom-color: #f5d742;
-      transform: translateY(-2px);
-    }
-    .nav-links a:hover i {
-      color: #f5d742;
-    }
+        /* ============ HEADER ============ */
+        .header {
+            background: var(--header-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: fixed; width: 100%; top: 0; z-index: 10000;
+            box-shadow: 0 1px 0 var(--border);
+            border-bottom: 2px solid transparent;
+            transition: all 0.4s;
+            height: var(--header-height);
+        }
+        .header.scrolled { border-bottom-color: var(--primary); box-shadow: 0 1px 0 var(--border), var(--shadow-sm); }
 
-    /* ============================================================
-       HERO – قسم الترحيب الكبير مع صور (أيقونات كصور)
-       ============================================================ */
-    .hero {
-      background: linear-gradient(145deg, #e6dfd3, #f7f2ea);
-      padding: 48px 0 56px;
-      border-radius: 0 0 60px 60px;
-      margin-bottom: 40px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: "🛋️🪑🛏️";
-      position: absolute;
-      font-size: 12rem;
-      opacity: 0.04;
-      left: -20px;
-      top: -40px;
-      transform: rotate(-10deg);
-      pointer-events: none;
-    }
-    .hero-grid {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      z-index: 2;
-    }
-    .hero-text {
-      flex: 1 1 400px;
-      animation: fadeSlideUp 1s ease;
-    }
-    .hero-text h1 {
-      font-size: 3.8rem;
-      font-weight: 800;
-      line-height: 1.2;
-      color: #0b1a2e;
-    }
-    .hero-text h1 i {
-      color: #b68b40;
-    }
-    .hero-text p {
-      font-size: 1.2rem;
-      color: #3e3a4a;
-      margin: 16px 0 24px;
-      max-width: 500px;
-    }
-    .hero-cta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-    .btn {
-      display: inline-block;
-      padding: 14px 38px;
-      border-radius: 60px;
-      font-weight: 700;
-      background: #0b1a2e;
-      color: #fff;
-      text-decoration: none;
-      transition: 0.3s;
-      border: none;
-      font-size: 1rem;
-      font-family: inherit;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-    .btn:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-    }
-    .btn-gold {
-      background: #f5d742;
-      color: #0b1a2e;
-    }
-    .btn-gold:hover {
-      background: #e0c12e;
-    }
-    .btn-outline {
-      background: transparent;
-      border: 2px solid #0b1a2e;
-      color: #0b1a2e;
-    }
-    .btn-outline:hover {
-      background: #0b1a2e;
-      color: #fff;
-    }
-    .hero-image {
-      flex: 1 1 300px;
-      text-align: center;
-      font-size: 9rem;
-      color: #b09b7e;
-      opacity: 0.8;
-      animation: float 3s ease-in-out infinite;
-    }
+        .nav-container {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 10px; max-width: 1400px; margin: auto;
+            height: 100%; gap: 6px;
+        }
 
-    @keyframes fadeSlideUp {
-      0% { opacity: 0; transform: translateY(30px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-14px); }
-      100% { transform: translateY(0); }
-    }
+        .logo {
+            display: flex; flex-direction: column; gap: 0; cursor: pointer;
+            flex-shrink: 0; min-width: 0;
+        }
+        .logo h1 {
+            font-size: 1rem; font-weight: 800; white-space: nowrap;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text; background-clip: text;
+            color: transparent; line-height: 1.2;
+        }
+        .logo p { font-size: 0.55rem; color: var(--primary); letter-spacing: 1px; opacity: 0.9; white-space: nowrap; font-weight: 500; }
 
-    /* ============================================================
-       SECTION TITLE
-       ============================================================ */
-    .section-title {
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin: 50px 0 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .section-title i {
-      color: #b68b40;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
+        .search-bar-desktop { display: none; }
 
-    /* ============================================================
-       CATEGORIES – مع صور (أيقونات)
-       ============================================================ */
-    .categories-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-    .category-card {
-      background: #fff;
-      padding: 28px 12px;
-      border-radius: 40px;
-      text-align: center;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.02);
-      transition: 0.3s;
-      border: 1px solid #f0ebe2;
-      cursor: default;
-      position: relative;
-      overflow: hidden;
-    }
-    .category-card::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #f5d74222, transparent);
-      opacity: 0;
-      transition: 0.4s;
-    }
-    .category-card:hover::after {
-      opacity: 1;
-    }
-    .category-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-      border-color: #dacfbc;
-    }
-    .category-card i {
-      font-size: 3.2rem;
-      color: #0b1a2e;
-      margin-bottom: 8px;
-      transition: 0.3s;
-    }
-    .category-card:hover i {
-      transform: rotate(6deg) scale(1.1);
-      color: #b68b40;
-    }
-    .category-card h4 {
-      font-weight: 700;
-      position: relative;
-      z-index: 2;
-    }
+        .header-actions {
+            display: flex; align-items: center; gap: 2px; flex-shrink: 0;
+        }
+        
+        .icon-btn {
+            width: 34px; height: 34px; border-radius: 50%; border: none;
+            background: transparent; color: var(--text); font-size: 0.95rem;
+            cursor: pointer; transition: all 0.25s;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .icon-btn:active { transform: scale(0.88); background: var(--bg-input); }
 
-    /* ============================================================
-       PRODUCTS – بطاقات ضخمة مع صور (أيقونات + خلفيات)
-       ============================================================ */
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 28px;
-      margin: 30px 0 50px;
-    }
-    .product-card {
-      background: #fff;
-      border-radius: 32px;
-      overflow: hidden;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.03);
-      transition: 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
-      border: 1px solid #ece6dc;
-      position: relative;
-    }
-    .product-card:hover {
-      transform: scale(1.02) translateY(-8px);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.08);
-      border-color: #b68b40;
-    }
-    .product-img {
-      background: #e9e1d4;
-      height: 210px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 5rem;
-      color: #6a5e4b;
-      transition: 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .product-img i {
-      transition: 0.5s;
-    }
-    .product-card:hover .product-img i {
-      transform: scale(1.15) rotate(4deg);
-      color: #0b1a2e;
-    }
-    .product-card:nth-child(1) .product-img { background: #d9d0c0; }
-    .product-card:nth-child(2) .product-img { background: #c7bdab; }
-    .product-card:nth-child(3) .product-img { background: #ddd2c2; }
-    .product-card:nth-child(4) .product-img { background: #d2c8b8; }
-    .product-card:nth-child(5) .product-img { background: #e0d6c6; }
-    .product-card:nth-child(6) .product-img { background: #ccc2b0; }
-    .product-card:nth-child(7) .product-img { background: #d6ccbb; }
-    .product-card:nth-child(8) .product-img { background: #cbc0ad; }
-    .product-card:nth-child(9) .product-img { background: #dfd5c5; }
-    .product-card:nth-child(10) .product-img { background: #d3c9b9; }
-    .product-card:nth-child(11) .product-img { background: #cbbfae; }
-    .product-card:nth-child(12) .product-img { background: #d8cebe; }
+        .dark-toggle {
+            background: transparent; border: none; cursor: pointer;
+            font-size: 1rem; padding: 6px; transition: transform 0.5s;
+            color: var(--text); width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+        }
+        .dark-toggle:active { transform: rotate(180deg) scale(1.1); background: var(--bg-input); }
+        .dark-toggle .fa-sun { display: none; }
+        [data-theme="dark"] .dark-toggle .fa-moon { display: none; }
+        [data-theme="dark"] .dark-toggle .fa-sun { display: inline; color: var(--secondary); }
 
-    .product-info {
-      padding: 20px 22px 26px;
-    }
-    .product-info h3 {
-      font-weight: 800;
-      font-size: 1.25rem;
-    }
-    .product-info .price {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #0b1a2e;
-      margin: 8px 0 4px;
-    }
-    .product-info .price small {
-      font-weight: 400;
-      font-size: 0.9rem;
-      color: #6a5e4b;
-    }
-    .product-info .location {
-      color: #6a5e4b;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .product-tag {
-      background: #f5d742;
-      padding: 4px 18px;
-      border-radius: 60px;
-      font-size: 0.75rem;
-      font-weight: 800;
-      display: inline-block;
-      margin-top: 10px;
-      transition: 0.25s;
-    }
-    .product-card:hover .product-tag {
-      background: #0b1a2e;
-      color: #f5d742;
-    }
+        .favorites-badge { position: relative; }
+        .fav-count {
+            position: absolute; top: -2px; right: -2px;
+            background: var(--favorite-color); color: white; font-size: 0.55rem;
+            width: 16px; height: 16px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 700;
+            line-height: 1;
+        }
 
-    /* ============================================================
-       BANNER عملاق مع حركة
-       ============================================================ */
-    .banner-mega {
-      background: #0b1a2e;
-      color: #f0ede8;
-      padding: 48px 40px;
-      border-radius: 60px;
-      margin: 40px 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      transition: 0.4s;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-    }
-    .banner-mega:hover {
-      transform: scale(1.01);
-      box-shadow: 0 16px 50px rgba(0,0,0,0.3);
-    }
-    .banner-mega h2 {
-      font-size: 2.6rem;
-      font-weight: 800;
-    }
-    .banner-mega h2 i {
-      color: #f5d742;
-    }
-    .banner-mega .btn {
-      background: #f5d742;
-      color: #0b1a2e;
-      font-size: 1.2rem;
-      padding: 16px 50px;
-    }
-    .banner-mega .btn:hover {
-      background: #fff;
-    }
+        /* ============ BOTTOM NAV ============ */
+        .bottom-nav {
+            display: flex; position: fixed; bottom: 0; left: 0; width: 100%;
+            background: var(--header-bg); backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            z-index: 9999; border-top: 1px solid var(--border);
+            padding: 8px 8px; padding-bottom: max(8px, env(safe-area-inset-bottom));
+            justify-content: space-around; align-items: center;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+        }
+        .bottom-nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 3px;
+            cursor: pointer; padding: 6px 12px; border-radius: 30px;
+            transition: all 0.25s; color: var(--text-secondary); border: none;
+            background: transparent; font-family: 'Tajawal', sans-serif;
+            font-size: 0.6rem; font-weight: 500; min-width: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .bottom-nav-item i { font-size: 1.2rem; transition: 0.25s; }
+        .bottom-nav-item:active { color: var(--primary); background: rgba(45,111,175,0.08); }
+        .bottom-nav-item:active i { transform: scale(1.1); }
+        .bottom-nav-item.active { color: var(--primary); font-weight: 700; background: rgba(45,111,175,0.08); }
+        .bottom-nav-item.active i { color: var(--primary); }
 
-    /* ============================================================
-       FOOTER
-       ============================================================ */
-    .footer {
-      background: #0b1a2e;
-      color: #cbc6bc;
-      padding: 50px 0 30px;
-      margin-top: 60px;
-      border-radius: 60px 60px 0 0;
-    }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 40px;
-    }
-    .footer h4 {
-      color: #fff;
-      margin-bottom: 16px;
-      font-size: 1.2rem;
-    }
-    .footer a {
-      color: #cbc6bc;
-      text-decoration: none;
-      display: block;
-      margin: 8px 0;
-      transition: 0.25s;
-    }
-    .footer a:hover {
-      color: #f5d742;
-      transform: translateX(-6px);
-    }
-    .footer .social {
-      display: flex;
-      gap: 20px;
-      font-size: 1.8rem;
-    }
-    .footer .social a {
-      display: inline-block;
-      transition: 0.3s;
-    }
-    .footer .social a:hover {
-      transform: translateY(-6px) rotate(4deg);
-      color: #f5d742;
-    }
-    .footer-bottom {
-      border-top: 1px solid #2a384a;
-      margin-top: 40px;
-      padding-top: 28px;
-      text-align: center;
-      font-size: 0.95rem;
-    }
+        /* ============ MOBILE SEARCH ============ */
+        .mobile-search-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 10001;
+            display: flex; flex-direction: column; padding: 15px;
+            transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-top: calc(var(--header-height) + 10px);
+        }
+        .mobile-search-overlay.active { transform: translateY(0); }
+        .mobile-search-overlay .search-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+        .mobile-search-overlay .search-input-wrap {
+            flex: 1; display: flex; background: var(--bg-input); border-radius: 50px;
+            border: 2px solid transparent; transition: 0.3s; overflow: hidden;
+        }
+        .mobile-search-overlay .search-input-wrap:focus-within { border-color: var(--primary); background: var(--bg-card); }
+        .mobile-search-overlay input {
+            flex: 1; padding: 13px 16px; border: none; background: transparent;
+            font-family: 'Tajawal', sans-serif; font-size: 0.95rem; color: var(--text);
+        }
+        .mobile-search-overlay input:focus { outline: none; }
+        .mobile-search-overlay .search-submit {
+            background: var(--primary); color: white; border: none;
+            padding: 13px 20px; cursor: pointer; font-size: 1rem;
+        }
+        .mobile-search-overlay .close-search {
+            width: 38px; height: 38px; border-radius: 50%; border: none;
+            background: var(--bg-input); font-size: 1.2rem; cursor: pointer; color: var(--text);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .mobile-search-overlay .quick-links { display: flex; flex-wrap: wrap; gap: 8px; }
+        .mobile-search-overlay .quick-link {
+            padding: 9px 16px; background: var(--bg-input); border-radius: 50px;
+            font-size: 0.8rem; cursor: pointer; border: none; font-family: 'Tajawal', sans-serif;
+            color: var(--text); transition: 0.25s;
+        }
+        .mobile-search-overlay .quick-link:active { background: var(--primary); color: white; }
 
-    /* ============================================================
-       RESPONSIVE – تحسينات خاصة بالجوال
-       ============================================================ */
-    @media (max-width: 800px) {
-      .hero-text h1 {
-        font-size: 2.4rem;
-      }
-      .header-inner {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-      }
-      .search-bar {
-        width: 100%;
-        flex: 1 1 auto;
-        min-width: 0;
-      }
-      .search-bar input {
-        padding: 12px 16px;
-        font-size: 0.95rem;
-      }
-      .search-bar button {
-        padding: 0 18px;
-        font-size: 1.1rem;
-      }
-      .logo img {
-        height: 38px;
-      }
-      .logo {
-        font-size: 1.6rem;
-        text-shadow: 0 2px 8px rgba(245, 215, 66, 0.3);
-        filter: drop-shadow(0 3px 8px rgba(0,0,0,0.3));
-      }
-      .banner-mega h2 {
-        font-size: 2rem;
-      }
-      .header-actions {
-        gap: 14px;
-        font-size: 1.1rem;
-        justify-content: flex-start;
-      }
-      .header-actions a span.badge {
-        font-size: 0.7rem;
-        padding: 0 8px;
-      }
-    }
+        /* ============ MOBILE MENU ============ */
+        .mobile-menu-backdrop {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 10000; opacity: 0; visibility: hidden;
+            transition: all 0.3s;
+        }
+        .mobile-menu-backdrop.active { opacity: 1; visibility: visible; }
+        .mobile-menu-sidebar {
+            position: fixed; top: 0; right: -290px; width: 275px; height: 100%;
+            background: var(--bg-card); z-index: 10001;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -5px 0 30px rgba(0,0,0,0.15); overflow-y: auto;
+            display: flex; flex-direction: column;
+            padding-bottom: 100px;
+        }
+        .mobile-menu-sidebar.active { right: 0; }
+        .mobile-menu-sidebar .menu-header {
+            padding: 18px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .mobile-menu-sidebar .menu-header h3 { font-size: 1rem; color: var(--primary); }
+        .mobile-menu-sidebar .menu-header .close-menu-btn {
+            width: 34px; height: 34px; border-radius: 50%; border: none;
+            background: var(--bg-input); cursor: pointer; font-size: 1.1rem;
+            color: var(--text); display: flex; align-items: center; justify-content: center;
+        }
+        .mobile-menu-sidebar .menu-link {
+            display: flex; align-items: center; gap: 12px; padding: 13px 18px;
+            border-radius: var(--radius-sm); cursor: pointer; transition: 0.2s;
+            font-weight: 500; font-size: 0.9rem; color: var(--text);
+            margin: 3px 10px;
+        }
+        .mobile-menu-sidebar .menu-link:active { background: rgba(45,111,175,0.08); color: var(--primary); }
+        .mobile-menu-sidebar .menu-link i { width: 20px; text-align: center; font-size: 0.95rem; }
+        .mobile-menu-sidebar .menu-divider { height: 1px; background: var(--border); margin: 8px 18px; }
 
-    @media (max-width: 480px) {
-      .search-bar input {
-        padding: 10px 12px;
-        font-size: 0.85rem;
-        min-width: 60px;
-      }
-      .search-bar button {
-        padding: 0 14px;
-        font-size: 1rem;
-      }
-      .logo {
-        font-size: 1.3rem;
-      }
-      .logo img {
-        height: 32px;
-      }
-      .header-actions {
-        gap: 10px;
-        font-size: 0.95rem;
-        flex-wrap: wrap;
-      }
-      .header-actions a i {
-        font-size: 1.1rem;
-      }
-    }
-  </style>
+        /* ============ HERO ============ */
+        .hero { margin-top: var(--header-height); }
+        .hero-slider {
+            position: relative; height: 38vh; min-height: 260px; overflow: hidden;
+            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+        }
+        .heroSwiper { width: 100%; height: 100%; }
+        .hero-slide { position: relative; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 25px; }
+        .hero-slide img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%);
+        }
+        .hero-content { position: relative; z-index: 2; text-align: center; color: white; padding: 0 16px 20px; }
+        .hero-content h1 { font-size: 1.6rem; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.3); line-height: 1.3; }
+        .hero-content h1 span { color: var(--secondary); }
+        .hero-content p { font-size: 0.8rem; opacity: 0.92; margin-top: 5px; }
+
+        /* ============ STATS BANNER ============ */
+        .big-stat-banner { padding: 0 12px; margin: -35px auto 15px auto; position: relative; z-index: 10; }
+        .big-stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 14px 20px; border-radius: var(--radius-xl); text-align: center;
+            box-shadow: var(--shadow-primary); color: white;
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; flex-wrap: wrap; transition: transform 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .big-stat-card:hover { transform: translateY(-3px); }
+        .big-stat-icon { font-size: 1.8rem; animation: bounceIcon 2s ease-in-out infinite; }
+        .big-stat-number { font-size: 2rem; font-weight: 900; line-height: 1.2; }
+        .big-stat-label { font-size: 0.85rem; font-weight: 700; }
+        .big-stat-sub { font-size: 0.6rem; opacity: 0.85; }
+        @keyframes bounceIcon { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+        /* ============ STATS CONTAINER ============ */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            padding: 12px 16px;
+            max-width: 800px;
+            margin: -8px auto 15px;
+            position: relative;
+            z-index: 10;
+        }
+        .stat-item {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 10px 8px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .stat-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+        .stat-number { display: block; font-size: 1.3rem; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 0.6rem; color: var(--text-secondary); }
+
+        /* ============ SECTION TITLE ============ */
+        .section-title {
+            text-align: center; font-size: 1.15rem; margin: 20px 0 15px;
+            color: var(--primary); font-weight: 700; padding: 0 16px;
+            position: relative;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        .section-title::after {
+            content: ''; display: block; width: 55px; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            margin: 8px auto 0; border-radius: 3px;
+        }
+
+        /* ============ VIEW ALL BUTTON ============ */
+        .provinces-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 10px; max-width: 1200px; margin: 0 auto 10px;
+        }
+        .view-all-btn {
+            background: transparent; border: 2px solid var(--primary);
+            color: var(--primary); padding: 6px 16px; border-radius: 50px;
+            cursor: pointer; font-family: 'Tajawal', sans-serif; font-size: 0.75rem;
+            font-weight: 700; transition: all 0.3s; white-space: nowrap;
+        }
+        .view-all-btn:hover { background: var(--primary); color: white; }
+        .view-all-btn:active { transform: scale(0.95); }
+
+        /* ============ NEARBY BUTTON ============ */
+        .nearby-btn-container { text-align: center; margin: 10px 0 20px; animation: fadeInUp 0.5s ease-out 0.1s both; }
+        .nearby-btn {
+            background: linear-gradient(135deg, var(--accent), #059669);
+            color: white; border: none; padding: 10px 25px;
+            border-radius: 50px; cursor: pointer; font-family: 'Tajawal', sans-serif;
+            font-size: 0.8rem; font-weight: 700; transition: all 0.3s;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(6,214,160,0.3);
+        }
+        .nearby-btn:active { transform: scale(0.95); }
+        .nearby-btn.loading { opacity: 0.7; pointer-events: none; }
+        .nearby-btn i { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+        /* ============ RANDOM BUTTON ============ */
+        .random-restaurant-container {
+            text-align: center; margin: 15px 0 10px;
+            animation: fadeInUp 0.5s ease-out 0.15s both;
+        }
+        .random-btn {
+            background: linear-gradient(135deg, #FF6B6B, #E85D04);
+            color: white; border: none; padding: 10px 28px;
+            border-radius: 50px; cursor: pointer; font-family: 'Tajawal', sans-serif;
+            font-size: 0.8rem; font-weight: 700; transition: all 0.3s;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(232,93,4,0.3);
+        }
+        .random-btn:active { transform: scale(0.95) rotate(-5deg); }
+        .random-btn i { font-size: 1.1rem; }
+        .random-hint { font-size: 0.6rem; color: var(--text-secondary); margin-top: 4px; }
+
+        /* ============ PROVINCES SLIDER ============ */
+        .provinces-slider-container { 
+            position: relative; 
+            padding: 0 10px; 
+            max-width: 1200px; 
+            margin: 0 auto 25px; 
+            animation: fadeInUp 0.5s ease-out 0.2s both;
+        }
+        .provincesSwiper { width: 100%; padding: 8px 3px 30px; overflow: hidden; }
+        .province-card {
+            background: var(--bg-card); border-radius: var(--radius); text-align: center;
+            cursor: pointer; transition: all 0.4s ease; box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border); overflow: hidden;
+            display: flex; flex-direction: column; min-height: 200px;
+        }
+        .province-card:active { transform: scale(0.96); }
+        .province-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-hover); }
+        .province-image { width: 100%; height: 120px; object-fit: cover; transition: transform 0.5s ease; }
+        .province-card:hover .province-image { transform: scale(1.05); }
+        .province-card-body { padding: 12px 10px; display: flex; flex-direction: column; align-items: center; flex: 1; justify-content: center; gap: 2px; }
+        .province-icon { font-size: 1.2rem; color: var(--primary); }
+        .province-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+        .store-count { color: var(--text-secondary); font-size: 0.65rem; }
+
+        /* ============ PROVINCE GRID ALL ============ */
+        .province-grid-all {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 14px;
+            padding: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .province-card-large {
+            cursor: pointer;
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+        .province-card-large:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+        .province-card-image {
+            position: relative;
+            height: 150px;
+            overflow: hidden;
+        }
+        .province-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .province-card-large:hover .province-card-image img { transform: scale(1.1); }
+        .province-card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 12px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+        .province-name-large { font-size: 1rem; font-weight: 700; display: block; }
+        .store-count-large { font-size: 0.7rem; opacity: 0.9; }
+
+        /* ============ CITY PAGE ============ */
+        .city-page {
+            display: none; min-height: 100vh;
+            padding: calc(var(--header-height) + 12px) 10px 100px;
+        }
+        .city-page.active { display: block; animation: fadeInUp 0.4s ease; }
+        .city-header { text-align: center; margin-bottom: 20px; }
+        .city-header h2 { font-size: 1.4rem; color: var(--primary); }
+        .city-header p { font-size: 0.75rem; color: var(--text-secondary); }
+        .back-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border: none;
+            padding: 9px 18px; border-radius: 50px; cursor: pointer;
+            font-size: 0.8rem; margin-bottom: 12px; transition: all 0.3s;
+            display: inline-flex; align-items: center; gap: 5px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .back-btn:active { transform: scale(0.95); }
+
+        /* ============ FILTERS ============ */
+        .filter-bar {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px;
+            padding: 0 3px; justify-content: center;
+        }
+        .filter-select, .filter-btn {
+            padding: 8px 13px; border-radius: 50px; border: 1px solid var(--border);
+            background: var(--bg-card); font-family: 'Tajawal', sans-serif;
+            font-size: 0.7rem; cursor: pointer; transition: 0.3s; color: var(--text);
+            -webkit-appearance: none; appearance: none;
+        }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .filter-btn.reset { background: var(--text-secondary); color: white; border: none; }
+
+        /* ============ ADVANCED FILTERS ============ */
+        .advanced-filter-toggle {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            padding: 8px 16px; border-radius: 50px; cursor: pointer;
+            font-family: 'Tajawal', sans-serif; font-size: 0.75rem;
+            color: var(--text); transition: all 0.3s; margin: 0 auto 12px;
+        }
+        .advanced-filter-toggle:hover { border-color: var(--primary); }
+        .advanced-filter-toggle:active { transform: scale(0.95); }
+        .advanced-filters {
+            background: var(--bg-card); border-radius: var(--radius);
+            padding: 16px; margin: 0 0 16px 0;
+            border: 1px solid var(--border);
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes slideUp { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(-10px)} }
+        .filter-group { margin-bottom: 12px; }
+        .filter-group label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 4px; }
+        .rating-filter { display: flex; gap: 6px; flex-wrap: wrap; }
+        .rating-btn {
+            padding: 5px 14px; border-radius: 50px; border: 1px solid var(--border);
+            background: var(--bg-input); cursor: pointer; font-family: 'Tajawal', sans-serif;
+            font-size: 0.7rem; transition: all 0.3s; color: var(--text);
+        }
+        .rating-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .rating-btn:hover { border-color: var(--primary); }
+
+        .toggle-switch {
+            position: relative; width: 44px; height: 24px;
+            display: inline-block;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-switch label {
+            position: absolute; cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-input); border-radius: 24px;
+            transition: 0.3s;
+        }
+        .toggle-switch label::before {
+            content: ""; position: absolute; height: 18px; width: 18px;
+            left: 3px; bottom: 3px; background: white;
+            border-radius: 50%; transition: 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .toggle-switch input:checked + label { background: var(--primary); }
+        .toggle-switch input:checked + label::before { transform: translateX(20px); }
+
+        /* ============ NO RESULTS ============ */
+        .no-results {
+            text-align: center; padding: 40px 20px;
+            grid-column: 1 / -1;
+        }
+        .no-results i { font-size: 3rem; color: var(--text-secondary); }
+        .no-results h3 { margin: 10px 0 5px; color: var(--text); }
+        .no-results p { color: var(--text-secondary); font-size: 0.8rem; }
+
+        /* ============ STORES GRID ============ */
+        .stores-grid { display: grid; grid-template-columns: 1fr; gap: 14px; max-width: 1200px; margin: 0 auto; }
+        .store-card {
+            background: var(--bg-card); border-radius: var(--radius); overflow: hidden;
+            transition: all 0.4s ease; cursor: pointer; box-shadow: var(--shadow-sm);
+            position: relative; border: 1px solid var(--border);
+        }
+        .store-card:active { transform: scale(0.97); }
+        .store-card:hover { transform: translateY(-5px) scale(1.01); box-shadow: var(--shadow-hover); }
+        .store-image { height: 160px; overflow: hidden; position: relative; background: var(--bg-input); }
+        .store-image img { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease, transform 0.5s ease; }
+        .store-image img.loaded { opacity: 1; }
+        .store-card:hover .store-image img { transform: scale(1.05); }
+        .rating {
+            position: absolute; top: 8px; right: 8px;
+            background: rgba(0,0,0,0.75); padding: 4px 10px;
+            border-radius: 50px; font-size: 0.7rem; color: var(--secondary);
+            backdrop-filter: blur(5px);
+        }
+        .favorite-btn {
+            position: absolute; top: 8px; left: 8px; z-index: 2;
+            background: var(--bg-card); border: none;
+            width: 32px; height: 32px; border-radius: 50%;
+            cursor: pointer; font-size: 0.9rem; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .favorite-btn.liked { color: var(--favorite-color); animation: heartBeat 0.4s ease; }
+        @keyframes heartBeat { 0%,100%{transform:scale(1)} 25%{transform:scale(1.3)} 50%{transform:scale(0.95)} }
+        .store-info { padding: 12px; }
+        .store-info h3 { font-size: 0.95rem; margin-bottom: 2px; color: var(--primary); }
+        .store-category { color: var(--accent); font-size: 0.7rem; margin-bottom: 5px; }
+        .store-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid var(--border); }
+        .price-range { color: var(--primary); font-weight: 700; font-size: 0.8rem; }
+        .btn-details {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border: none;
+            padding: 6px 16px; border-radius: 50px; cursor: pointer;
+            font-size: 0.72rem; font-family: 'Tajawal', sans-serif;
+            transition: transform 0.2s;
+        }
+        .btn-details:active { transform: scale(0.95); }
+        .distance-badge {
+            background: rgba(6,214,160,0.15); color: var(--accent); padding: 2px 8px;
+            border-radius: 50px; font-size: 0.6rem; font-weight: 700;
+            display: inline-flex; align-items: center; gap: 2px;
+        }
+        .star-rating-small { color: var(--star-color); font-size: 0.7rem; }
+
+        /* ============ MODAL ============ */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 99999; align-items: flex-end;
+            justify-content: center; backdrop-filter: blur(3px);
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--bg-card); width: 100%; max-width: 600px;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0; padding: 22px 16px;
+            position: relative; max-height: 85vh; overflow-y: auto;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text); padding-bottom: 100px;
+        }
+        @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+        .modal-close {
+            position: sticky; top: 0; float: left; z-index: 2;
+            background: var(--bg-input); color: var(--text); border: none;
+            width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem;
+        }
+        .modal-img { width: 100%; height: 180px; object-fit: cover; border-radius: var(--radius); margin: 12px 0; }
+        .google-map { width: 100%; height: 180px; border-radius: var(--radius); margin: 10px 0; border: 1px solid var(--border); }
+        .whatsapp-order {
+            background: #25D366; color: white; padding: 11px 18px; border-radius: 50px;
+            border: none; cursor: pointer; margin-top: 10px; display: inline-flex;
+            align-items: center; gap: 6px; font-size: 0.85rem; width: 100%;
+            justify-content: center; font-family: 'Tajawal', sans-serif;
+            transition: transform 0.2s;
+        }
+        .whatsapp-order:active { transform: scale(0.97); }
+        .info-row { margin: 6px 0; padding: 10px; background: var(--info-bg); border-radius: var(--radius-sm); font-size: 0.8rem; }
+        .share-buttons { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .share-btn {
+            flex: 1; min-width: 55px; padding: 9px; border: none; border-radius: 50px;
+            cursor: pointer; font-size: 0.72rem; color: white; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 4px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .share-btn:active { transform: scale(0.95); }
+        .share-btn.whatsapp { background: #25D366; }
+        .share-btn.facebook { background: #1877F2; }
+        .share-btn.telegram { background: #0088cc; }
+
+        /* ============ BOOKING FORM ============ */
+        .booking-form {
+            margin: 12px 0;
+            padding: 16px;
+            background: var(--info-bg);
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--primary);
+        }
+        .booking-form h4 { color: var(--primary); font-size: 0.9rem; margin-bottom: 8px; }
+        .booking-form .form-row {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;
+        }
+        .booking-form input, .booking-form select {
+            flex: 1; min-width: 100px;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text);
+        }
+        .booking-form input:focus, .booking-form select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .booking-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+        .booking-submit:active { transform: scale(0.95); }
+
+        /* ============ REVIEW SECTION ============ */
+        .review-section { margin-top: 18px; padding-top: 18px; border-top: 2px solid var(--border); }
+        .review-section h4 { font-size: 0.9rem; color: var(--primary); margin-bottom: 10px; }
+        .star-input { display: flex; gap: 3px; margin-bottom: 8px; direction: ltr; justify-content: flex-end; }
+        .star-input i { font-size: 1.3rem; color: #ddd; cursor: pointer; transition: 0.2s; }
+        .star-input i.active, .star-input i:hover { color: var(--star-color); }
+        .review-textarea {
+            width: 100%; padding: 10px; border-radius: var(--radius-sm);
+            border: 1px solid var(--border); font-family: 'Tajawal', sans-serif;
+            resize: vertical; min-height: 60px; font-size: 0.8rem;
+            margin-bottom: 8px; background: var(--bg-input); color: var(--text);
+        }
+        .review-submit {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border: none;
+            padding: 9px 22px; border-radius: 50px; cursor: pointer;
+            font-family: 'Tajawal', sans-serif; font-size: 0.8rem;
+        }
+        .review-submit:active { transform: scale(0.95); }
+        .existing-reviews { margin-top: 12px; max-height: 300px; overflow-y: auto; }
+        .review-item {
+            background: var(--info-bg); padding: 10px; border-radius: var(--radius-sm);
+            margin-bottom: 8px; font-size: 0.72rem;
+        }
+        .review-item .review-stars { color: var(--star-color); }
+        .review-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+        .review-user { display: flex; align-items: center; gap: 4px; font-weight: 700; }
+        .review-date { color: var(--text-secondary); font-size: 0.6rem; }
+        .review-images { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+        .review-images img { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
+
+        .review-photo-input { margin: 10px 0; }
+        .review-photo-input label { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px; }
+        .review-photo-input input[type="file"] {
+            width: 100%; padding: 8px; border: 1px dashed var(--border);
+            border-radius: var(--radius-sm); background: var(--bg-input);
+            font-family: 'Tajawal', sans-serif; font-size: 0.7rem; color: var(--text);
+        }
+        .review-image-preview { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+
+        /* ============ ABOUT PAGE ============ */
+        .about-page {
+            padding: calc(var(--header-height) + 16px) 12px 100px;
+            max-width: 1000px; margin: 0 auto;
+        }
+        .about-hero {
+            text-align: center; padding: 30px 16px;
+            background: linear-gradient(135deg, rgba(45,111,175,0.08), rgba(6,214,160,0.08));
+            border-radius: var(--radius-xl); margin-bottom: 25px;
+        }
+        .about-hero h1 { font-size: 1.6rem; color: var(--primary); margin-bottom: 8px; }
+        .about-hero p { color: var(--text-secondary); font-size: 0.85rem; }
+        .about-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 30px; }
+        .about-card {
+            background: var(--bg-card); border-radius: var(--radius); padding: 20px;
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .about-card h3 { color: var(--primary); margin-bottom: 10px; font-size: 1rem; display: flex; align-items: center; gap: 6px; }
+        .about-card p, .about-card li { color: var(--text-secondary); font-size: 0.78rem; line-height: 1.7; }
+        .about-card ul { list-style: none; padding: 0; }
+        .about-card ul li { padding: 3px 0; }
+        .about-card ul li::before { content: '• '; color: var(--primary); }
+        .province-detail-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .province-detail-card {
+            background: var(--bg-card); border-radius: var(--radius); overflow: hidden;
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+            transition: all 0.3s; cursor: pointer;
+        }
+        .province-detail-card:active { transform: scale(0.97); }
+        .province-detail-card img { width: 100%; height: 130px; object-fit: cover; }
+        .province-detail-card .detail-body { padding: 12px; }
+        .province-detail-card h4 { color: var(--primary); font-size: 0.85rem; margin-bottom: 4px; }
+        .province-detail-card p { color: var(--text-secondary); font-size: 0.7rem; line-height: 1.5; }
+
+        /* ============ ARTICLES ============ */
+        .articles-grid {
+            display: grid; grid-template-columns: 1fr; gap: 16px;
+            max-width: 1200px; margin: 0 auto;
+        }
+        .article-card {
+            background: var(--bg-card); border-radius: var(--radius); overflow: hidden;
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+            cursor: pointer; transition: all 0.3s;
+        }
+        .article-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+        .article-image { position: relative; height: 160px; overflow: hidden; }
+        .article-image img { width: 100%; height: 100%; object-fit: cover; }
+        .article-category {
+            position: absolute; top: 10px; right: 10px;
+            background: var(--primary); color: white; padding: 4px 12px;
+            border-radius: 50px; font-size: 0.6rem; font-weight: 700;
+        }
+        .article-content { padding: 14px; }
+        .article-content h3 { font-size: 0.95rem; color: var(--primary); margin-bottom: 4px; }
+        .article-content p { font-size: 0.75rem; color: var(--text-secondary); }
+        .article-meta { display: flex; gap: 12px; margin-top: 8px; font-size: 0.65rem; color: var(--text-secondary); }
+        .article-meta i { margin-left: 3px; }
+
+        .article-full { max-width: 800px; margin: 0 auto; }
+        .article-full-title { font-size: 1.5rem; color: var(--primary); }
+        .article-full-meta { display: flex; gap: 12px; font-size: 0.75rem; color: var(--text-secondary); margin: 8px 0 12px; flex-wrap: wrap; }
+        .article-full-image { width: 100%; max-height: 400px; object-fit: cover; border-radius: var(--radius); margin: 12px 0; }
+        .article-full-content { font-size: 0.85rem; line-height: 1.8; }
+        .article-full-content p { margin-bottom: 12px; }
+        .article-share { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+        /* ============ MAP PAGE ============ */
+        #mapContainer { height: 450px; border-radius: var(--radius); overflow: hidden; margin: 10px 0; border: 1px solid var(--border); }
+        .map-filters {
+            display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0;
+            justify-content: center;
+        }
+        .map-filters select {
+            padding: 8px 14px; border-radius: 50px; border: 1px solid var(--border);
+            background: var(--bg-card); font-family: 'Tajawal', sans-serif;
+            font-size: 0.7rem; color: var(--text); cursor: pointer;
+        }
+        .map-btn {
+            background: linear-gradient(135deg, #4A90D9, #2D6FAF);
+            color: white; border: none; padding: 10px 25px;
+            border-radius: 50px; cursor: pointer; font-family: 'Tajawal', sans-serif;
+            font-size: 0.8rem; font-weight: 700; transition: all 0.3s;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(74,144,217,0.3);
+            margin: 5px auto;
+        }
+        .map-btn:active { transform: scale(0.95); }
+
+        /* ============ INSTALL PROMPT ============ */
+        .install-prompt {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            padding: 16px;
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.15);
+            z-index: 99998;
+            border-top: 3px solid var(--primary);
+            animation: slideUpInstall 0.5s ease;
+        }
+        @keyframes slideUpInstall { from{transform:translateY(100%)} to{transform:translateY(0)} }
+        .install-prompt-content {
+            display: flex; align-items: center; gap: 12px;
+            max-width: 600px; margin: 0 auto;
+        }
+        .install-icon { font-size: 2rem; }
+        .install-text { flex: 1; }
+        .install-text h4 { font-size: 0.85rem; color: var(--text); margin: 0; }
+        .install-text p { font-size: 0.65rem; color: var(--text-secondary); margin: 0; }
+        .install-btn {
+            background: var(--primary); color: white; border: none;
+            padding: 8px 20px; border-radius: 50px; cursor: pointer;
+            font-family: 'Tajawal', sans-serif; font-size: 0.75rem; font-weight: 700;
+        }
+        .install-close {
+            background: transparent; border: none; font-size: 1.2rem;
+            cursor: pointer; color: var(--text-secondary); padding: 0 4px;
+        }
+
+        /* ============ SCROLL TOP ============ */
+        .scroll-top {
+            position: fixed; bottom: 80px; right: 12px; z-index: 999;
+            width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border: none; cursor: pointer; font-size: 1rem;
+            box-shadow: var(--shadow); opacity: 0; transform: translateY(15px);
+            transition: all 0.3s; pointer-events: none;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .scroll-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .scroll-top:active { transform: scale(0.95); }
+
+        /* ============ TOAST ============ */
+        .toast {
+            position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+            background: #333; color: white; padding: 10px 24px; border-radius: 50px;
+            font-size: 0.8rem; z-index: 99999; opacity: 0; transition: opacity 0.3s;
+            pointer-events: none; font-family: 'Tajawal', sans-serif;
+        }
+        .toast.show { opacity: 1; }
+
+        /* ============ POINTS NOTIFICATION ============ */
+        .points-notification {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #FFBA08, #E85D04);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(232,93,4,0.3);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUpPoints 0.5s ease;
+            font-family: 'Tajawal', sans-serif;
+        }
+        @keyframes slideUpPoints { from{opacity:0;transform:translateX(-50%) translateY(20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+        @keyframes slideDownPoints { from{opacity:1;transform:translateX(-50%) translateY(0)} to{opacity:0;transform:translateX(-50%) translateY(20px)} }
+
+        /* ============ CELEBRATION ============ */
+        @keyframes celebrationAnim {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.5) rotate(180deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(2) rotate(360deg); opacity: 0; }
+        }
+
+        /* ============ SKELETON LOADING ============ */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-input) 25%, var(--bg-card) 50%, var(--bg-input) 75%);
+            background-size: 200% 100%;
+            animation: skeletonLoading 1.5s infinite;
+            border-radius: var(--radius-sm);
+        }
+        @keyframes skeletonLoading { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+        .skeleton-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            min-height: 280px;
+        }
+        .skeleton-image { width: 100%; height: 160px; background: var(--bg-input); }
+        .skeleton-text { height: 14px; margin: 8px 12px; background: var(--bg-input); border-radius: 4px; }
+        .skeleton-text.short { width: 60%; }
+        .skeleton-text.medium { width: 80%; }
+
+        /* ============ COMPARE PANEL ============ */
+        .compare-panel {
+            position: fixed;
+            bottom: 70px;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            padding: 12px 16px;
+            box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
+            z-index: 9990;
+            border-top: 3px solid var(--primary);
+            display: none;
+            animation: slideUpInstall 0.3s ease;
+        }
+        .compare-panel.active { display: block; }
+        .compare-panel .compare-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 8px;
+        }
+        .compare-panel .compare-header h4 { color: var(--primary); font-size: 0.9rem; }
+        .compare-panel .compare-items {
+            display: flex; gap: 8px; flex-wrap: wrap;
+        }
+        .compare-panel .compare-item {
+            background: var(--bg-input);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.7rem;
+        }
+        .compare-panel .compare-item .remove-compare {
+            cursor: pointer; color: red; font-weight: 700;
+        }
+        .compare-panel .compare-btn {
+            background: var(--primary);
+            color: white; border: none;
+            padding: 6px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .compare-panel .compare-btn:active { transform: scale(0.95); }
+
+        /* ============ COMPARE RESULTS ============ */
+        .compare-results {
+            display: none;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin: 12px 0;
+            border: 2px solid var(--primary);
+        }
+        .compare-results.active { display: block; }
+        .compare-results table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .compare-results th, .compare-results td {
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .compare-results th {
+            background: var(--primary);
+            color: white;
+        }
+        .compare-results td:first-child {
+            font-weight: 700;
+            background: var(--info-bg);
+        }
+
+        /* ============ ADMIN PANEL ============ */
+        .admin-panel {
+            display: none;
+            padding: calc(var(--header-height) + 16px) 12px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .admin-panel.active { display: block; }
+        .admin-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+        .admin-card h3 { color: var(--primary); margin-bottom: 12px; font-size: 1rem; }
+        .admin-form input, .admin-form select, .admin-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-input);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+        .admin-form input:focus, .admin-form select:focus, .admin-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .admin-form textarea { min-height: 80px; resize: vertical; }
+        .admin-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .admin-submit:active { transform: scale(0.95); }
+        .admin-list { max-height: 300px; overflow-y: auto; }
+        .admin-list-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.75rem;
+        }
+        .admin-list-item .delete-btn {
+            background: red; color: white; border: none;
+            padding: 4px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.65rem;
+        }
+        .admin-list-item .delete-btn:active { transform: scale(0.95); }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            background: var(--bg-card); padding: 20px 12px;
+            text-align: center; border-top: 2px solid var(--primary);
+            font-size: 0.72rem; color: var(--text); margin-bottom: 70px;
+        }
+        .developer-footer {
+            background: linear-gradient(135deg, #1a1a2e, #16213e); color: white;
+            text-align: center; padding: 18px 12px; border-top: 2px solid var(--primary);
+            font-size: 0.7rem; margin-bottom: 70px;
+        }
+        .developer-footer .dev-content { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .developer-footer .dev-logo { width: 40px; height: 40px; border-radius: 10px; object-fit: contain; background: white; padding: 3px; }
+        .developer-footer .dev-text h4 { font-size: 0.8rem; color: var(--secondary); }
+        .developer-footer .dev-text a { color: var(--primary-light); text-decoration: none; font-weight: 700; }
+
+        /* ============ RESPONSIVE ============ */
+        @media (min-width: 640px) {
+            :root { --header-height: 70px; }
+            .nav-container { padding: 0 16px; }
+            .logo h1 { font-size: 1.2rem; }
+            .logo p { font-size: 0.6rem; }
+            .icon-btn { width: 38px; height: 38px; font-size: 1rem; }
+            .hero-slider { height: 50vh; min-height: 350px; }
+            .hero-content h1 { font-size: 2.4rem; }
+            .hero-content p { font-size: 0.9rem; }
+            .big-stat-card { padding: 18px 30px; }
+            .big-stat-icon { font-size: 2.2rem; }
+            .big-stat-number { font-size: 2.5rem; }
+            .stores-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+            .province-detail-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-grid { grid-template-columns: repeat(2, 1fr); }
+            .articles-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-container { grid-template-columns: repeat(4, 1fr); }
+            .province-grid-all { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            :root { --header-height: var(--header-height-desktop); }
+            .search-bar-desktop {
+                display: flex; align-items: center; gap: 8px;
+            }
+            .search-bar-desktop input {
+                padding: 10px 16px; background: var(--bg-input); border: 1px solid var(--border);
+                border-radius: 50px; width: 220px; font-family: 'Tajawal', sans-serif;
+                font-size: 0.8rem; transition: 0.3s; color: var(--text);
+            }
+            .search-bar-desktop input:focus { outline: none; border-color: var(--primary); }
+            .header-actions .icon-btn.search-btn-mobile { display: none; }
+            .header-actions .icon-btn.menu-btn { display: none; }
+            .nav-container { padding: 0 25px; gap: 12px; }
+            .logo h1 { font-size: 1.4rem; }
+            .icon-btn { width: 40px; height: 40px; }
+            .bottom-nav { display: none; }
+            .hero-slider { height: 60vh; min-height: 420px; border-radius: 0 0 var(--radius-xl) var(--radius-xl); }
+            .hero-content h1 { font-size: 3.2rem; }
+            .big-stat-card { padding: 20px 35px; }
+            .big-stat-number { font-size: 2.8rem; }
+            .stores-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; }
+            .province-detail-grid { grid-template-columns: repeat(3, 1fr); }
+            .articles-grid { grid-template-columns: repeat(3, 1fr); }
+            .province-grid-all { grid-template-columns: repeat(3, 1fr); }
+            .stats-container { max-width: 1000px; }
+            .modal { align-items: center; }
+            .modal-content { border-radius: var(--radius-xl); max-width: 720px; }
+            .modal-img { height: 280px; }
+            .google-map { height: 280px; }
+            .whatsapp-order { width: auto; }
+            .about-page { padding: calc(var(--header-height) + 30px) 30px 60px; }
+            .footer, .developer-footer { margin-bottom: 0; }
+            .toast { bottom: 24px; }
+            .scroll-top { bottom: 24px; right: 20px; }
+            .city-page { padding-bottom: 60px; }
+            .compare-panel { bottom: 20px; left: 50%; transform: translateX(-50%); max-width: 700px; border-radius: var(--radius-xl); }
+            .compare-panel.active { display: block; }
+            .province-nav-prev, .province-nav-next {
+                display: flex; width: 40px; height: 40px;
+                position: absolute; top: 50%; transform: translateY(-50%);
+                background: var(--bg-card); border-radius: 50%; box-shadow: var(--shadow);
+                cursor: pointer; z-index: 10; align-items: center; justify-content: center;
+                color: var(--primary); font-size: 1rem; border: 2px solid var(--primary);
+                transition: all 0.3s;
+            }
+            .province-nav-prev:hover, .province-nav-next:hover { background: var(--primary); color: white; }
+            .province-nav-prev { right: 5px; }
+            .province-nav-next { left: 5px; }
+        }
+
+        @media (min-width: 1280px) {
+            .stores-grid { grid-template-columns: repeat(4, 1fr); }
+            .province-detail-grid { grid-template-columns: repeat(4, 1fr); }
+            .province-grid-all { grid-template-columns: repeat(4, 1fr); }
+            .articles-grid { grid-template-columns: repeat(4, 1fr); }
+            .search-bar-desktop input { width: 280px; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- HEADER: شعار + بحث + أيقونات -->
-<header class="header">
-  <div class="container header-inner">
-    <!-- الشعار: صورة من Imgur + نص مع تظليل -->
-    <a href="#" class="logo">
-      <img src="https://imgur.com/rAnuXIA.png" alt="Mobitex Logo" onerror="this.src='https://via.placeholder.com/48?text=M'">
-      <span>Mobitex</span><span>.sy</span>
-    </a>
-    <!-- شريط بحث – محسّن للجوال -->
-    <div class="search-bar">
-      <input type="text" placeholder="ابحث عن أثاث، موبيليا، غرف نوم...">
-      <button><i class="fas fa-search"></i></button>
+<!-- ============ PROGRESS BAR ============ -->
+<div id="progressBar"></div>
+
+<!-- ============ BACKGROUND ============ -->
+<div class="animated-bg"></div>
+<div class="floating-shapes" id="shapes"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ============ SCROLL TOP ============ -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- ============ HEADER ============ -->
+<header class="header" id="header">
+    <div class="nav-container">
+        <div class="logo" onclick="goBack()">
+            <h1>🛋️ mobitex</h1>
+            <p>أكبر سوق للموبيليا والمفروشات</p>
+        </div>
+        
+        <div class="search-bar-desktop">
+            <input type="text" id="desktopSearch" placeholder="🔍 ابحث عن محل مفروشات...">
+        </div>
+        
+        <div class="header-actions">
+            <button class="dark-toggle" onclick="toggleDarkMode()" aria-label="الوضع الليلي">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+            </button>
+            
+            <button class="icon-btn" onclick="showArticlesPage()" aria-label="مقالات">
+                <i class="fas fa-newspaper"></i>
+            </button>
+            
+            <button class="icon-btn" onclick="showAboutSyria()" aria-label="عن سوريا">
+                <i class="fas fa-info-circle"></i>
+            </button>
+            
+            <button class="icon-btn" onclick="showAdminPanel()" aria-label="لوحة التحكم">
+                <i class="fas fa-cog"></i>
+            </button>
+            
+            <button class="icon-btn favorites-badge" onclick="showFavorites()" aria-label="المفضلة">
+                <i class="fas fa-heart" style="color:var(--favorite-color);"></i>
+                <span class="fav-count" id="favCount" style="display:none;">0</span>
+            </button>
+            
+            <button class="icon-btn search-btn-mobile" onclick="openMobileSearch()" aria-label="بحث">
+                <i class="fas fa-search"></i>
+            </button>
+            
+            <button class="icon-btn menu-btn" onclick="openMobileMenu()" aria-label="قائمة">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </div>
-    <!-- أيقونات المستخدم -->
-    <div class="header-actions">
-      <a href="#"><i class="far fa-heart"></i> <span class="badge">12</span></a>
-      <a href="#"><i class="far fa-user"></i> حسابي</a>
-      <a href="#"><i class="fas fa-cart-shopping"></i> <span class="badge">3</span></a>
-    </div>
-  </div>
 </header>
 
-<!-- NAV: قائمة التنقل -->
-<nav class="main-nav">
-  <div class="container">
-    <ul class="nav-links">
-      <li><a href="#"><i class="fas fa-th-large"></i> جميع الأقسام</a></li>
-      <li><a href="#"><i class="fas fa-chair"></i> غرف جلوس</a></li>
-      <li><a href="#"><i class="fas fa-bed"></i> غرف نوم</a></li>
-      <li><a href="#"><i class="fas fa-utensils"></i> مطابخ</a></li>
-      <li><a href="#"><i class="fas fa-lightbulb"></i> إضاءة</a></li>
-      <li><a href="#"><i class="fas fa-tag"></i> عروض خاصّة</a></li>
-      <li><a href="#"><i class="fas fa-store"></i> متاجر</a></li>
-    </ul>
-  </div>
+<!-- ============ BOTTOM NAV ============ -->
+<nav class="bottom-nav" id="bottomNav">
+    <button class="bottom-nav-item active" onclick="goBack(); setActiveNav(this)">
+        <i class="fas fa-home"></i>
+        <span>الرئيسية</span>
+    </button>
+    <button class="bottom-nav-item" onclick="showArticlesPage(); setActiveNav(this)">
+        <i class="fas fa-newspaper"></i>
+        <span>مقالات</span>
+    </button>
+    <button class="bottom-nav-item" onclick="openMobileSearch(); setActiveNav(this)">
+        <i class="fas fa-search"></i>
+        <span>بحث</span>
+    </button>
+    <button class="bottom-nav-item" onclick="showFavorites(); setActiveNav(this)">
+        <i class="fas fa-heart"></i>
+        <span>مفضلة</span>
+    </button>
+    <button class="bottom-nav-item" onclick="openMobileMenu(); setActiveNav(this)">
+        <i class="fas fa-ellipsis-h"></i>
+        <span>المزيد</span>
+    </button>
 </nav>
 
-<!-- HERO: ترحيب وصورة متحركة -->
-<section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-text">
-      <h1>أكبر سوق <i>للموبيليا</i> في سوريا</h1>
-      <p>اكتشف آلاف القطع الفريدة من أفضل المصممين والحرفيين السوريين. أثاث منزلك يروي قصتك.</p>
-      <div class="hero-cta">
-        <a href="#" class="btn btn-gold"><i class="fas fa-store"></i> تسوّق الآن</a>
-        <a href="#" class="btn btn-outline"><i class="fas fa-camera"></i> تصفّح المعرض</a>
-      </div>
-    </div>
-    <div class="hero-image">
-      <i class="fas fa-couch"></i>
-    </div>
-  </div>
-</section>
-
-<!-- CATEGORIES: تصنيفات مع صور (أيقونات) -->
-<div class="container">
-  <div class="section-title"><i class="fas fa-grid-2"></i> تصنيفات ضخمة</div>
-  <div class="categories-grid">
-    <div class="category-card"><i class="fas fa-couch"></i><h4>كنب وكراسي</h4></div>
-    <div class="category-card"><i class="fas fa-bed"></i><h4>غرف نوم</h4></div>
-    <div class="category-card"><i class="fas fa-utensils"></i><h4>طاولات طعام</h4></div>
-    <div class="category-card"><i class="fas fa-draw-polygon"></i><h4>مكاتب</h4></div>
-    <div class="category-card"><i class="fas fa-lamp"></i><h4>إضاءة ديكورية</h4></div>
-    <div class="category-card"><i class="fas fa-rug"></i><h4>سجاد ومفروشات</h4></div>
-    <div class="category-card"><i class="fas fa-door-open"></i><h4>أبواب وخزائن</h4></div>
-    <div class="category-card"><i class="fas fa-palette"></i><h4>قطع فنية</h4></div>
-  </div>
-
-  <!-- PRODUCTS: تشكيلة ضخمة مع صور (أيقونات) -->
-  <div class="section-title"><i class="fas fa-star"></i> أحدث الإضافات · تشكيلة ضخمة</div>
-  <div class="products-grid" id="productGrid">
-    <!-- يتم إضافة المنتجات بواسطة JS (انظر أدناه) -->
-  </div>
-
-  <!-- BANNER عملاق مع حركة -->
-  <div class="banner-mega">
-    <div>
-      <h2><i class="fas fa-trophy"></i> أكبر معرض للموبيليا السورية</h2>
-      <p style="font-size: 1.1rem; margin-top: 6px;">أكثر من 5000 قطعة · أثاث مصنوع بأيدي سورية</p>
-    </div>
-    <a href="#" class="btn">استكشف الكتالوج <i class="fas fa-arrow-left"></i></a>
-  </div>
-</div>
-
-<!-- FOOTER: تذييل شامل -->
-<footer class="footer">
-  <div class="container footer-grid">
-    <div>
-      <h4>Mobitex</h4>
-      <p style="margin-bottom: 12px;">أكبر منصة للموبيليا والمفروشات في سوريا، نجمع بين الجودة والتراث.</p>
-      <div class="social">
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-telegram"></i></a>
-        <a href="#"><i class="fab fa-whatsapp"></i></a>
-      </div>
-    </div>
-    <div>
-      <h4>روابط سريعة</h4>
-      <a href="#">جميع الأقسام</a>
-      <a href="#">عروض اليوم</a>
-      <a href="#">متاجر موثوقة</a>
-      <a href="#">طلب مخصص</a>
-    </div>
-    <div>
-      <h4>الدعم</h4>
-      <a href="#">مركز المساعدة</a>
-      <a href="#">سياسة الإرجاع</a>
-      <a href="#">الشحن والتوصيل</a>
-      <a href="#">تواصل معنا</a>
-    </div>
-    <div>
-      <h4>حسابي</h4>
-      <a href="#">تسجيل الدخول</a>
-      <a href="#">إنشاء حساب</a>
-      <a href="#">قائمة رغباتي</a>
-      <a href="#">طلباتي</a>
-    </div>
-  </div>
-  <div class="container footer-bottom">
-    &copy; 2026 Mobitex · سوق الموبيليا السورية — كل الحقوق محفوظة
-  </div>
-</footer>
-
-<!-- ============================================================
-     JS (منفصل) – مع شرح لكل دالة
-     ============================================================ -->
 <script>
-  (function() {
-    "use strict";
-
-    // 1. بيانات المنتجات (صور وهمية عبر أيقونات FontAwesome)
-    const products = [
-      { name: 'كنب كلاسيكي فخم', price: '2,450,000', location: 'دمشق', icon: 'fa-couch', tag: 'حصري' },
-      { name: 'غرفة نوم مودرن', price: '4,200,000', location: 'حلب', icon: 'fa-bed', tag: 'تخفيض' },
-      { name: 'طاولة طعام رخام', price: '3,150,000', location: 'اللاذقية', icon: 'fa-utensils', tag: 'أفضل جودة' },
-      { name: 'خزانة ملابس كبيرة', price: '2,800,000', location: 'حمص', icon: 'fa-door-open', tag: 'صناعة سورية' },
-      { name: 'أريكة زاوية مخمل', price: '3,900,000', location: 'دمشق', icon: 'fa-couch', tag: 'فاخر' },
-      { name: 'مكتب قائد مع كرسي', price: '1,850,000', location: 'طرطوس', icon: 'fa-draw-polygon', tag: 'عصري' },
-      { name: 'سجادة يدوية ناعمة', price: '980,000', location: 'حلب', icon: 'fa-rug', tag: 'طبيعي' },
-      { name: 'كرسي هزاز خشبي', price: '1,250,000', location: 'السويداء', icon: 'fa-chair', tag: 'كلاسيكي' },
-      { name: 'طقم إضاءة ديكور', price: '730,000', location: 'دمشق', icon: 'fa-lamp', tag: 'حديث' },
-      { name: 'مرآة ضخمة بإطار', price: '1,100,000', location: 'اللاذقية', icon: 'fa-palette', tag: 'أنيق' },
-      { name: 'كنب 3 مقاعد جلد', price: '3,700,000', location: 'حمص', icon: 'fa-couch', tag: 'عرض خاص' },
-      { name: 'غرفة أطفال متكاملة', price: '2,950,000', location: 'دمشق', icon: 'fa-bed', tag: 'ألوان زاهية' }
-    ];
-
-    // 2. عرض المنتجات في الشبكة
-    const grid = document.getElementById('productGrid');
-    if (grid) {
-      products.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.innerHTML = `
-          <div class="product-img"><i class="fas ${p.icon}"></i></div>
-          <div class="product-info">
-            <h3>${p.name}</h3>
-            <div class="price">${p.price} <small>ل.س</small></div>
-            <div class="location"><i class="fas fa-map-pin"></i> ${p.location}</div>
-            <span class="product-tag">${p.tag}</span>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    // 3. تفاعلات وحركات إضافية
-    const ctaBtn = document.querySelector('.hero-cta .btn-gold');
-    if (ctaBtn) {
-      ctaBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        alert('🚀 مرحباً بك في Mobitex · أكبر سوق للموبيليا السورية!');
-        this.style.backgroundColor = '#fff';
-        this.style.color = '#0b1a2e';
-        setTimeout(() => {
-          this.style.backgroundColor = '';
-          this.style.color = '';
-        }, 300);
-      });
-    }
-
-    console.log('🛋️ Mobitex · سوريا · أكبر سوق للموبيليا والمفروشات');
-    console.log('📌 تم إضافة صور (أيقونات) وحركات وتفاعلات بنجاح!');
-
-    const searchInput = document.querySelector('.search-bar input');
-    if (searchInput) {
-      searchInput.addEventListener('focus', function() {
-        this.placeholder = '🔍 ابحث عن كنبة، غرفة نوم، أو مطبخ...';
-      });
-      searchInput.addEventListener('blur', function() {
-        this.placeholder = 'ابحث عن أثاث، موبيليا، غرف نوم...';
-      });
-    }
-
-  })();
+function setActiveNav(el) {
+    document.querySelectorAll('.bottom-nav-item').forEach(item => item.classList.remove('active'));
+    el.classList.add('active');
+}
 </script>
 
+<!-- ============ MOBILE SEARCH ============ -->
+<div class="mobile-search-overlay" id="mobileSearchOverlay">
+    <div class="search-header">
+        <div class="search-input-wrap">
+            <input type="text" id="mobileSearchInput" placeholder="🔍 ابحث عن محل مفروشات...">
+            <button class="search-submit" onclick="globalSearch(document.getElementById('mobileSearchInput').value)"><i class="fas fa-search"></i></button>
+        </div>
+        <button class="close-search" onclick="closeMobileSearch()"><i class="fas fa-times"></i></button>
+    </div>
+    <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:12px;">اقتراحات سريعة:</p>
+    <div class="quick-links">
+        <button class="quick-link" onclick="quickSearch('أثاث منزلي')">🛋️ أثاث منزلي</button>
+        <button class="quick-link" onclick="quickSearch('غرف نوم')">🛏️ غرف نوم</button>
+        <button class="quick-link" onclick="quickSearch('موكيت')">🧶 موكيت</button>
+        <button class="quick-link" onclick="quickSearch('ستائر')">🪟 ستائر</button>
+        <button class="quick-link" onclick="quickSearch('إضاءة')">💡 إضاءة</button>
+    </div>
+</div>
+
+<!-- ============ MOBILE MENU ============ -->
+<div class="mobile-menu-backdrop" id="mobileMenuBackdrop" onclick="closeMobileMenu()"></div>
+<div class="mobile-menu-sidebar" id="mobileMenuSidebar">
+    <div class="menu-header">
+        <h3>🛋️ القائمة</h3>
+        <button class="close-menu-btn" onclick="closeMobileMenu()"><i class="fas fa-times"></i></button>
+    </div>
+    <div style="padding:12px 0;">
+        <div class="menu-link" onclick="closeMobileMenu(); goBack(); setActiveNav(document.querySelectorAll('.bottom-nav-item')[0]);">
+            <i class="fas fa-home"></i> <span>الرئيسية</span>
+        </div>
+        <div class="menu-link" onclick="closeMobileMenu(); showArticlesPage(); setActiveNav(document.querySelectorAll('.bottom-nav-item')[1]);">
+            <i class="fas fa-newspaper"></i> <span>مقالات</span>
+        </div>
+        <div class="menu-link" onclick="closeMobileMenu(); showMapView();">
+            <i class="fas fa-map"></i> <span>خريطة المحلات</span>
+        </div>
+        <div class="menu-link" onclick="closeMobileMenu(); showAboutSyria(); setActiveNav(document.querySelectorAll('.bottom-nav-item')[2]);">
+            <i class="fas fa-info-circle"></i> <span>عن سوريا</span>
+        </div>
+        <div class="menu-link" onclick="closeMobileMenu(); showFavorites(); setActiveNav(document.querySelectorAll('.bottom-nav-item')[3]);">
+            <i class="fas fa-heart" style="color:var(--favorite-color);"></i> <span>المفضلة</span>
+        </div>
+        <div class="menu-link" onclick="closeMobileMenu(); showAdminPanel();">
+            <i class="fas fa-cog"></i> <span>لوحة التحكم</span>
+        </div>
+        <div class="menu-divider"></div>
+        <div class="menu-link" onclick="closeMobileMenu(); toggleDarkMode();">
+            <i class="fas fa-moon"></i> <span>الوضع الليلي</span>
+        </div>
+        <div class="menu-link" onclick="closeMobileMenu(); showRandomStore();">
+            <i class="fas fa-dice"></i> <span>جرب محل عشوائي 🎲</span>
+        </div>
+        <div class="menu-divider"></div>
+        <div class="menu-link" onclick="window.location.href='privacy-terms.html'">
+            <i class="fas fa-shield-alt"></i> <span>سياسة الخصوصية</span>
+        </div>
+        <div class="menu-link" onclick="window.location.href='privacy-terms.html#terms'">
+            <i class="fas fa-gavel"></i> <span>الشروط والأحكام</span>
+        </div>
+    </div>
+</div>
+
+<!-- ============ MAIN PAGE ============ -->
+<div id="mainPage">
+    <div class="hero">
+        <div class="hero-slider">
+            <div class="swiper heroSwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide hero-slide">
+                        <img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="أثاث منزلي فاخر" loading="eager">
+                        <div class="hero-overlay"></div>
+                        <div class="hero-content">
+                            <h1>أهلاً بك في <span>mobitex</span></h1>
+                            <p>أكبر سوق للموبيليا والمفروشات السورية</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide hero-slide">
+                        <img src="https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="غرف نوم فاخرة" loading="lazy">
+                        <div class="hero-overlay"></div>
+                        <div class="hero-content">
+                            <h1>أكثر من <span>7,000</span> محل</h1>
+                            <p>دليلك الشامل للمفروشات في سوريا</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide hero-slide">
+                        <img src="https://images.pexels.com/photos/1350789/pexels-photo-1350789.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="ديكورات منزلية" loading="lazy">
+                        <div class="hero-overlay"></div>
+                        <div class="hero-content">
+                            <h1>أجمل <span>المفروشات</span></h1>
+                            <p>أحدث صيحات الديكور والأثاث المنزلي</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+
+        <!-- ============ BIG STAT BANNER ============ -->
+        <div class="big-stat-banner" data-aos="fade-up">
+            <div class="big-stat-card">
+                <div class="big-stat-icon">🛋️</div>
+                <div>
+                    <div class="big-stat-number">+7,000</div>
+                    <div class="big-stat-label">محل مفروشات في سوريا</div>
+                    <div class="big-stat-sub">دليلك الشامل لـ 14 محافظة</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ STATS ============ -->
+        <div class="stats-container" id="statsContainer"></div>
+
+        <!-- ============ SECTION TITLE ============ -->
+        <div class="provinces-header">
+            <h2 class="section-title" style="margin:0;">📍 اختر محافظتك</h2>
+            <button class="view-all-btn" onclick="showAllProvinces()">
+                عرض الكل <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+
+        <!-- ============ NEARBY BUTTON ============ -->
+        <div class="nearby-btn-container">
+            <button class="nearby-btn" onclick="findNearbyStores()" id="nearbyBtn">
+                <i class="fas fa-location-crosshairs"></i>
+                <span>أقرب المحلات من موقعي</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============ MAP BUTTON ============ -->
+    <div style="text-align:center;margin:5px 0 15px;">
+        <button class="map-btn" onclick="showMapView()">
+            <i class="fas fa-map"></i> عرض المحلات على الخريطة
+        </button>
+    </div>
+
+    <!-- ============ MOST VIEWED ============ -->
+    <div id="mostViewedContainer">
+        <h2 class="section-title">👀 الأكثر مشاهدة</h2>
+        <div class="stores-grid" id="mostViewedGrid"></div>
+    </div>
+
+    <!-- ============ OPEN NOW ============ -->
+    <div id="openNowContainer">
+        <h2 class="section-title">🕐 محلات مفتوحة الآن</h2>
+        <div class="stores-grid" id="openNowGrid"></div>
+    </div>
+
+    <!-- ============ PROVINCES SLIDER ============ -->
+    <div class="provinces-slider-container">
+        <div class="swiper provincesSwiper" id="provincesSwiper">
+            <div class="swiper-wrapper" id="provincesWrapper"></div>
+        </div>
+        <div class="province-nav-prev" id="provincePrev"><i class="fas fa-chevron-right"></i></div>
+        <div class="province-nav-next" id="provinceNext"><i class="fas fa-chevron-left"></i></div>
+        <div class="province-pagination" id="provincePagination"></div>
+    </div>
+</div>
+
+<!-- ============ CITY PAGES CONTAINER ============ -->
+<div id="cityPagesContainer"></div>
+
+<!-- ============ ADMIN PANEL ============ -->
+<div class="admin-panel" id="adminPanel">
+    <button class="back-btn" onclick="closeAdminPanel()"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+    <h2 class="section-title">⚙️ لوحة التحكم</h2>
+    
+    <div class="admin-card">
+        <h3>📊 إحصائيات</h3>
+        <div id="adminStats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;"></div>
+    </div>
+    
+    <div class="admin-card">
+        <h3>➕ إضافة محل جديد</h3>
+        <form class="admin-form" id="addStoreForm" onsubmit="addNewStore(event)">
+            <input type="text" id="newStoreName" placeholder="اسم المحل" required>
+            <input type="text" id="newStoreCategory" placeholder="نوع المنتجات (مثل: أثاث - موكيت - ستائر)" required>
+            <input type="text" id="newStoreProvince" placeholder="المحافظة" list="provinceList" required>
+            <datalist id="provinceList">
+                <option value="دمشق"><option value="ريف دمشق"><option value="حلب"><option value="حمص">
+                <option value="حماة"><option value="اللاذقية"><option value="طرطوس"><option value="دير الزور">
+                <option value="الحسكة"><option value="الرقة"><option value="إدلب"><option value="السويداء">
+                <option value="درعا"><option value="القنيطرة">
+            </datalist>
+            <input type="number" id="newStoreRating" placeholder="التقييم (0-5)" min="0" max="5" step="0.1" required>
+            <input type="text" id="newStorePriceRange" placeholder="نطاق السعر ($-$$$$)" required>
+            <input type="text" id="newStoreAddress" placeholder="العنوان" required>
+            <input type="text" id="newStorePhone" placeholder="رقم الهاتف">
+            <input type="text" id="newStoreHours" placeholder="ساعات العمل (مثال: 10:00 - 22:00)">
+            <textarea id="newStoreDesc" placeholder="وصف المحل والمنتجات"></textarea>
+            <input type="text" id="newStoreImage" placeholder="رابط الصورة" value="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg">
+            <button type="submit" class="admin-submit">➕ إضافة المحل</button>
+        </form>
+    </div>
+    
+    <div class="admin-card">
+        <h3>📝 إدارة التقييمات</h3>
+        <div id="adminReviewsList" class="admin-list"></div>
+    </div>
+
+    <div class="admin-card">
+        <h3>🔗 روابط سريعة</h3>
+        <div style="display:flex;gap:15px;flex-wrap:wrap;justify-content:center;">
+            <a href="privacy-terms.html" target="_blank" style="color:var(--primary);text-decoration:none;font-size:0.8rem;padding:8px 16px;border:1px solid var(--primary);border-radius:50px;transition:0.3s;">
+                <i class="fas fa-shield-alt"></i> سياسة الخصوصية
+            </a>
+            <a href="privacy-terms.html#terms" target="_blank" style="color:var(--primary);text-decoration:none;font-size:0.8rem;padding:8px 16px;border:1px solid var(--primary);border-radius:50px;transition:0.3s;">
+                <i class="fas fa-gavel"></i> الشروط والأحكام
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ============ STORE MODAL ============ -->
+<div id="storeModal" class="modal" onclick="if(event.target===this) closeModal()">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+        <h2 id="modalTitle" style="color:var(--primary);margin-bottom:5px;font-size:1.2rem;"></h2>
+        <div id="modalCategory" style="color:var(--accent);margin-bottom:3px;font-size:0.8rem;"></div>
+        <div id="modalRating" style="margin-bottom:8px;font-size:0.8rem;"></div>
+        <img id="modalImage" class="modal-img" src="" alt="">
+        <p id="modalDesc" style="margin:12px 0;font-size:0.85rem;"></p>
+        <div class="info-row" id="modalAddress"></div>
+        <div class="info-row" id="modalPhone"></div>
+        <div class="info-row" id="modalHours"></div>
+        <div class="info-row" id="modalPrice"></div>
+        <div id="modalMap" class="google-map"></div>
+        
+        <button id="modalWhatsapp" class="whatsapp-order"><i class="fab fa-whatsapp"></i> 📞 تواصل عبر واتساب</button>
+        <div class="share-buttons">
+            <button class="share-btn whatsapp" id="shareWhatsapp"><i class="fab fa-whatsapp"></i> واتساب</button>
+            <button class="share-btn facebook" id="shareFacebook"><i class="fab fa-facebook-f"></i> فيسبوك</button>
+            <button class="share-btn telegram" id="shareTelegram"><i class="fab fa-telegram-plane"></i> تلغرام</button>
+        </div>
+        
+        <button style="background:var(--accent);color:white;border:none;padding:8px 16px;border-radius:50px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:0.75rem;margin:8px 0;width:100%;" onclick="addToCompare()">
+            <i class="fas fa-balance-scale"></i> إضافة للمقارنة
+        </button>
+        
+        <div class="review-section" id="reviewSection">
+            <h4>⭐ تقييمات وآراء الزوار</h4>
+            <div class="star-input" id="starInput">
+                <i class="far fa-star" data-star="5"></i>
+                <i class="far fa-star" data-star="4"></i>
+                <i class="far fa-star" data-star="3"></i>
+                <i class="far fa-star" data-star="2"></i>
+                <i class="far fa-star" data-star="1"></i>
+            </div>
+            <textarea class="review-textarea" id="reviewText" placeholder="اكتب رأيك عن المحل..."></textarea>
+            <div class="review-photo-input">
+                <label>📸 أضف صورة من تجربتك (اختياري)</label>
+                <input type="file" id="reviewImage" accept="image/*" multiple>
+                <div class="review-image-preview" id="imagePreview"></div>
+            </div>
+            <button class="review-submit" onclick="submitReview()">نشر التقييم ✍️</button>
+            <div class="existing-reviews" id="existingReviews"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ COMPARE PANEL ============ -->
+<div class="compare-panel" id="comparePanel">
+    <div class="compare-header">
+        <h4>⚖️ مقارنة المحلات (<span id="compareCount">0</span>/3)</h4>
+        <div>
+            <button class="compare-btn" onclick="showCompareResults()">عرض المقارنة</button>
+            <button class="compare-btn" style="background:red;" onclick="clearCompare()">مسح</button>
+        </div>
+    </div>
+    <div class="compare-items" id="compareItems"></div>
+</div>
+
+<!-- ============ COMPARE RESULTS ============ -->
+<div id="compareResultsContainer" style="max-width:1200px;margin:0 auto;padding:10px;"></div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+    <p>🛋️ <strong>mobitex</strong> - أكبر سوق للموبيليا والمفروشات السورية</p>
+    <p style="margin-top:4px;font-size:0.65rem;opacity:0.7;">📍 جميع المحافظات | 7000+ محل | تحديثات يومية</p>
+    
+    <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:15px;padding-top:15px;border-top:1px solid var(--border);">
+        <a href="privacy-terms.html" style="color:var(--text-secondary);text-decoration:none;font-size:0.75rem;transition:0.3s;">
+            <i class="fas fa-shield-alt" style="color:var(--primary);"></i> سياسة الخصوصية
+        </a>
+        <a href="privacy-terms.html#terms" style="color:var(--text-secondary);text-decoration:none;font-size:0.75rem;transition:0.3s;">
+            <i class="fas fa-gavel" style="color:var(--primary);"></i> الشروط والأحكام
+        </a>
+        <span style="color:var(--text-secondary);font-size:0.7rem;">|</span>
+        <span style="color:var(--text-secondary);font-size:0.7rem;">
+            <i class="fas fa-copyright"></i> 2026 Kyntrava AI
+        </span>
+    </div>
+</footer>
+
+<!-- ===== DEVELOPER FOOTER ===== -->
+<div class="developer-footer">
+    <div class="dev-content">
+        <img src="https://imgur.com/QQou6iW.jpg" alt="Kyntrava AI" class="dev-logo" onerror="this.style.display='none'">
+        <div class="dev-text">
+            <h4>🚀 تم تطويره بواسطة</h4>
+            <p><a href="#" target="_blank">Kyntrava AI</a> - الذكاء الاصطناعي بأيدي عربية</p>
+            <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+                <a href="privacy-terms.html" style="color:#F48C06;text-decoration:none;font-size:0.7rem;transition:0.3s;">
+                    <i class="fas fa-shield-alt"></i> سياسة الخصوصية
+                </a>
+                <span style="color:#666;">|</span>
+                <a href="privacy-terms.html#terms" style="color:#F48C06;text-decoration:none;font-size:0.7rem;transition:0.3s;">
+                    <i class="fas fa-gavel"></i> الشروط والأحكام
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ SCRIPTS ============ -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// ============================================================
+// ============ MAIN APPLICATION CODE ==========================
+// ============================================================
+
+// ============ INIT ============
+AOS.init({ duration: 600, once: true, disable: 'mobile' });
+
+// ============ TOAST ============
+function showToast(msg) { 
+    const toast = document.getElementById('toast'); 
+    toast.textContent = msg; 
+    toast.classList.add('show'); 
+    setTimeout(() => toast.classList.remove('show'), 2500); 
+}
+
+// ============ DARK MODE ============
+function toggleDarkMode() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+    localStorage.setItem('darkMode', isDark ? '' : 'dark');
+}
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('darkMode')) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+}
+if (localStorage.getItem('darkMode') === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+}
+
+// ============ PROGRESS BAR ============
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+    document.getElementById('header').classList.toggle('scrolled', scrollTop > 50);
+    document.getElementById('scrollTop').classList.toggle('visible', scrollTop > 400);
+});
+
+// ============ SHAPES ============
+for (let i = 0; i < 20; i++) {
+    const shape = document.createElement('div'); shape.className = 'shape';
+    const size = Math.random() * 70 + 20;
+    Object.assign(shape.style, {
+        width: size+'px', height: size+'px', left: Math.random()*100+'%',
+        top: Math.random()*100+'%', animationDelay: Math.random()*20+'s',
+        animationDuration: Math.random()*25+15+'s'
+    });
+    document.getElementById('shapes').appendChild(shape);
+}
+
+// ============ MOBILE SEARCH ============
+function openMobileSearch() { document.getElementById('mobileSearchOverlay').classList.add('active'); setTimeout(() => document.getElementById('mobileSearchInput').focus(), 400); }
+function closeMobileSearch() { document.getElementById('mobileSearchOverlay').classList.remove('active'); }
+function openMobileMenu() { document.getElementById('mobileMenuSidebar').classList.add('active'); document.getElementById('mobileMenuBackdrop').classList.add('active'); document.body.style.overflow = 'hidden'; }
+function closeMobileMenu() { document.getElementById('mobileMenuSidebar').classList.remove('active'); document.getElementById('mobileMenuBackdrop').classList.remove('active'); document.body.style.overflow = ''; }
+function quickSearch(term) { document.getElementById('mobileSearchInput').value = term; closeMobileSearch(); globalSearch(term); }
+
+// ============ LAZY IMAGES ============
+const lazyObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const img = entry.target;
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
+                img.onload = () => img.classList.add('loaded');
+                img.removeAttribute('data-src');
+                lazyObserver.unobserve(img);
+            }
+        }
+    });
+}, { rootMargin: '150px' });
+
+function observeLazyImages() {
+    document.querySelectorAll('img[data-src]').forEach(img => lazyObserver.observe(img));
+}
+
+// ============ DATA ============
+const provinces = ["دمشق", "ريف دمشق", "حلب", "حمص", "حماة", "اللاذقية", "طرطوس", "دير الزور", "الحسكة", "الرقة", "إدلب", "السويداء", "درعا", "القنيطرة"];
+
+// Categories for furniture and furnishings
+const productCategories = [
+    'أثاث منزلي', 'غرف نوم', 'مجالس', 'مطابخ', 'موكيت', 'ستائر', 
+    'إضاءة', 'ديكور', 'غرف أطفال', 'أثاث مكتبي', 'مفروشات فاخرة',
+    'سجاد', 'تحف', 'مرايا', 'أثاث حدائق', 'خزائن', 'طاولات', 'كنب'
+];
+
+// Furniture images from Pexels
+const imagePool = [
+    'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg',
+    'https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg',
+    'https://images.pexels.com/photos/1350789/pexels-photo-1350789.jpeg',
+    'https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg',
+    'https://images.pexels.com/photos/276555/pexels-photo-276555.jpeg',
+    'https://images.pexels.com/photos/276556/pexels-photo-276556.jpeg',
+    'https://images.pexels.com/photos/271816/pexels-photo-271816.jpeg',
+    'https://images.pexels.com/photos/271817/pexels-photo-271817.jpeg',
+];
+
+const provinceIcons = {
+    'دمشق': 'landmark', 'ريف دمشق': 'tree', 'حلب': 'city', 'حمص': 'industry',
+    'حماة': 'water', 'اللاذقية': 'umbrella-beach', 'طرطوس': 'ship',
+    'دير الزور': 'bridge', 'الحسكة': 'mountain', 'الرقة': 'mosque',
+    'إدلب': 'leaf', 'السويداء': 'gem', 'درعا': 'fort-awesome', 'القنيطرة': 'hill-rockslide'
+};
+
+const provinceImages = {
+    'دمشق': 'https://imgur.com/qxbKmUp.jpg', 'ريف دمشق': 'https://imgur.com/JuyiJQI.jpg',
+    'حلب': 'https://imgur.com/CIQfzQe.jpg', 'حمص': 'https://imgur.com/OSJci2j.jpg',
+    'حماة': 'https://imgur.com/8bAdiEp.jpg', 'اللاذقية': 'https://imgur.com/nvTadsG.jpg',
+    'طرطوس': 'https://imgur.com/tzXN4rF.jpg', 'دير الزور': 'https://imgur.com/PAywOu1.jpg',
+    'الحسكة': 'https://imgur.com/xhhxnjH.jpg', 'الرقة': 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=600&h=400&fit=crop',
+    'إدلب': 'https://imgur.com/J6rg244.jpg', 'السويداء': 'https://imgur.com/iEa5b0S.jpg',
+    'درعا': 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&h=400&fit=crop',
+    'القنيطرة': 'https://imgur.com/QlsJK5A.jpg'
+};
+
+const provinceInfo = {
+    'دمشق': { desc: 'أقدم عاصمة مأهولة في التاريخ، مركز صناعة الأثاث الفاخر والديكور.', famous: 'سوق الحميدية، باب توما، منطقة المالكي' },
+    'ريف دمشق': { desc: 'تحيط بالعاصمة وتضم مناطق صناعية عديدة للمفروشات.', famous: 'معلولا، الزبداني، دوما، جرمانا' },
+    'حلب': { desc: 'العاصمة الاقتصادية لسوريا، تشتهر بصناعة الأخشاب والأثاث التقليدي.', famous: 'قلعة حلب، السوق المسقوف' },
+    'حمص': { desc: 'ثالث أكبر مدينة، مركز صناعي مهم للموبيليا.', famous: 'قلعة الحصن، جامع خالد بن الوليد' },
+    'حماة': { desc: 'مدينة النواعير، تشتهر بالأثاث الخشبي والحرف اليدوية.', famous: 'النواعير، نهر العاصي' },
+    'اللاذقية': { desc: 'عروس الساحل السوري، تشتهر بأثاث الحدائق والمفروشات البحرية.', famous: 'شاطئ الكورنيش، أوغاريت' },
+    'طرطوس': { desc: 'لؤلؤة المتوسط، تشتهر بالأثاث المصنوع من الخشب البحري.', famous: 'جزيرة أرواد، كاتدرائية طرطوس' },
+    'دير الزور': { desc: 'واحة الفرات الخضراء، تشتهر بصناعة السجاد اليدوي.', famous: 'الجسر المعلق، نهر الفرات' },
+    'الحسكة': { desc: 'سلة غذاء سوريا، تشتهر بالصناعات الحرفية والموكيت.', famous: 'نهر الخابور، تل حلف' },
+    'الرقة': { desc: 'عاصمة الرشيد التاريخية، تشتهر بالصناعات النسيجية.', famous: 'قصر البنات، بحيرة الأسد' },
+    'إدلب': { desc: 'أرض الزيتون، تشتهر بالأثاث المصنوع من الزيتون.', famous: 'مملكة إيبلا، بساتين الزيتون' },
+    'السويداء': { desc: 'جبل العرب، تشتهر بصناعة الأثاث الحجري والديكور.', famous: 'آثار شهبا، جبل العرب' },
+    'درعا': { desc: 'مهد الثورة، تشتهر بالصناعات التقليدية والأثاث الشعبي.', famous: 'مدرج بصرى، بصرى الشام' },
+    'القنيطرة': { desc: 'مرتفعات الجولان الخضراء، تشتهر بالصناعات الحرفية.', famous: 'غابات الجولان، نبع بانياس' }
+};
+
+const provinceCoords = {
+    'دمشق': { lat: 33.5138, lng: 36.2765 }, 'ريف دمشق': { lat: 33.5, lng: 36.3 },
+    'حلب': { lat: 36.2021, lng: 37.1343 }, 'حمص': { lat: 34.7321, lng: 36.7105 },
+    'حماة': { lat: 35.135, lng: 36.7514 }, 'اللاذقية': { lat: 35.531, lng: 35.7909 },
+    'طرطوس': { lat: 34.889, lng: 35.886 }, 'دير الزور': { lat: 35.338, lng: 40.144 },
+    'الحسكة': { lat: 36.511, lng: 40.743 }, 'الرقة': { lat: 35.959, lng: 39.018 },
+    'إدلب': { lat: 35.933, lng: 36.633 }, 'السويداء': { lat: 32.706, lng: 36.569 },
+    'درعا': { lat: 32.624, lng: 36.102 }, 'القنيطرة': { lat: 33.124, lng: 35.823 }
+};
+
+// ============ DAMASCUS REAL STORES (FURNITURE) ============
+const damascusRealStores = [
+    {id:"s1",name:"معرض الأثاث الدمشقي",category:"أثاث منزلي",rating:4.7,priceRange:"$$$",priceLevel:3,description:"أشهر وأفخم معارض الأثاث في دمشق، يقدم تشكيلة واسعة من الأثاث الفاخر والمفروشات الراقية.",address:"دمشق - المالكي",phone:"0113732527",lat:33.5190,lng:36.2785,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"s2",name:"عالم السجاد",category:"سجاد",rating:4.5,priceRange:"$$$",priceLevel:3,description:"متخصص في السجاد الفاخر والموكيت اليدوي من أجود الأنواع.",address:"دمشق - المالكي",phone:"0934100015",lat:33.5185,lng:36.2790,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"s3",name:"ركن الديكور",category:"ديكور",rating:4.4,priceRange:"$$",priceLevel:2,description:"أجمل التحف والديكورات المنزلية، إكسسوارات راقية.",address:"دمشق - المالكي",phone:"0935808487",lat:33.5178,lng:36.2800,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"s4",name:"أثاث الحدائق",category:"أثاث حدائق",rating:4.3,priceRange:"$$$",priceLevel:3,description:"أفخر أثاث الحدائق والتراسات، خشب متين وتصاميم راقية.",address:"دمشق - المالكي",phone:"0983000559",lat:33.5180,lng:36.2780,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"s5",name:"غرف النوم الفاخرة",category:"غرف نوم",rating:4.6,priceRange:"$$$$",priceLevel:4,description:"غرف نوم فاخرة بتصاميم إيطالية ومواد عالية الجودة.",address:"دمشق - المهاجرين",phone:"0113712200",lat:33.5205,lng:36.2750,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"s6",name:"ستائر الشام",category:"ستائر",rating:4.2,priceRange:"$$",priceLevel:2,description:"تشكيلة واسعة من الستائر والمفروشات القماشية الفاخرة.",address:"دمشق - المالكي",phone:"0113738964",lat:33.5175,lng:36.2810,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"s7",name:"موكيت المالكي",category:"موكيت",rating:4.1,priceRange:"$$",priceLevel:2,description:"أجود أنواع الموكيت والزرابي السورية والأوروبية.",address:"دمشق - المالكي",phone:"0113739115",lat:33.5170,lng:36.2795,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"s8",name:"مجالس العرب",category:"مجالس",rating:4.4,priceRange:"$$$",priceLevel:3,description:"مجالس عربية أصيلة، كنب شرقي فاخر وديكورات تراثية.",address:"دمشق - المالكي",phone:"0113733743",lat:33.5173,lng:36.2805,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"s9",name:"إضاءة الفردوس",category:"إضاءة",rating:4.3,priceRange:"$$",priceLevel:2,description:"ثريات وإضاءة فاخرة بتصاميم عصرية وكلاسيكية.",address:"دمشق - المالكي",phone:"0955355555",lat:33.5188,lng:36.2808,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"s10",name:"أثاث المطابخ الألماني",category:"مطابخ",rating:4.5,priceRange:"$$$$",priceLevel:4,description:"مطابخ ألمانية فاخرة بتصاميم عصرية وخامات عالية الجودة.",address:"دمشق - المالكي",phone:"0113739994",lat:33.5192,lng:36.2815,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"s11",name:"تحف الشرق",category:"تحف",rating:4.2,priceRange:"$$$",priceLevel:3,description:"تحف وقطع فنية نادرة من التراث السوري والعربي.",address:"دمشق - الجاحظ",phone:"0113333385",lat:33.5150,lng:36.2900,openingHours:"10:00 صباحاً - 8:00 مساءً"},
+    {id:"s12",name:"أثاث المكاتب الحديث",category:"أثاث مكتبي",rating:4.4,priceRange:"$$$",priceLevel:3,description:"أثاث مكتبي بتصاميم عصرية وخامات فاخرة.",address:"دمشق - الجاحظ",phone:"",lat:33.5145,lng:36.2890,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"s13",name:"غرف الأطفال السعيدة",category:"غرف أطفال",rating:4.3,priceRange:"$$",priceLevel:2,description:"أثاث وغرف أطفال بتصاميم مرحة وآمنة.",address:"دمشق - الجاحظ",phone:"0113339078",lat:33.5148,lng:36.2905,openingHours:"10:00 صباحاً - 8:00 مساءً"},
+    {id:"s14",name:"مرايا الجمال",category:"مرايا",rating:4.3,priceRange:"$$",priceLevel:2,description:"مرايا فاخرة وتصاميم جدارية مميزة.",address:"دمشق - الجاحظ",phone:"0940355679",lat:33.5153,lng:36.2895,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"s15",name:"كنب وكراسي",category:"كنب",rating:4.2,priceRange:"$$$",priceLevel:3,description:"تشكيلة واسعة من الكنب والكراسي الفاخرة.",address:"دمشق - الجاحظ",phone:"0942220293",lat:33.5155,lng:36.2908,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"s16",name:"خزائن وحقائب",category:"خزائن",rating:4.5,priceRange:"$$$",priceLevel:3,description:"خزائن وحقائب فاخرة بتصاميم عصرية",address:"دمشق - الجاحظ",phone:"0113333765",lat:33.5142,lng:36.2898,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"s17",name:"طاولات الطعام",category:"طاولات",rating:4.3,priceRange:"$$$",priceLevel:3,description:"طاولات طعام بتصاميم مميزة وخشب طبيعي.",address:"دمشق - الجاحظ",phone:"0943337706",lat:33.5158,lng:36.2910,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"s18",name:"مفروشات فاخرة",category:"مفروشات فاخرة",rating:4.6,priceRange:"$$$$",priceLevel:4,description:"أفخم المفروشات المنزلية من أشهر الماركات العالمية.",address:"دمشق - الجاحظ",phone:"0934029029",lat:33.5140,lng:36.2892,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"s19",name:"أثاث كلاسيك",category:"أثاث منزلي",rating:4.4,priceRange:"$$$",priceLevel:3,description:"أثاث كلاسيكي فاخر بتصاميم مستوحاة من العمارة الفرنسية.",address:"دمشق - الجاحظ",phone:"0113333810",lat:33.5145,lng:36.2915,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"s20",name:"سجاد دمشق",category:"سجاد",rating:4.7,priceRange:"$$$",priceLevel:3,description:"أفخر أنواع السجاد اليدوي والزرابي السورية.",address:"دمشق - الجاحظ",phone:"0944234755",lat:33.5147,lng:36.2902,openingHours:"9:00 صباحاً - 8:00 مساءً"}
+];
+
+// ============ RIF DIMASHQ REAL STORES ============
+const rifDimashqRealStores = [
+    {id:"rd1",name:"سوق الأثاث الدمشقي",category:"أثاث منزلي",rating:4.3,priceRange:"$$",priceLevel:2,description:"سوق متكامل للأثاث والمفروشات في ريف دمشق.",address:"ريف دمشق - دوما",phone:"+963985902020",lat:33.57,lng:36.40,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"rd2",name:"معرض السجاد الشرقي",category:"سجاد",rating:4.5,priceRange:"$$$",priceLevel:3,description:"معرض متخصص بالسجاد اليدوي الفاخر.",address:"ريف دمشق - جرمانا",phone:"+963116711936",lat:33.48,lng:36.34,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"rd3",name:"ديكورات داريا",category:"ديكور",rating:4.2,priceRange:"$$",priceLevel:2,description:"ديكورات وتصاميم داخلية راقية.",address:"ريف دمشق - داريا",phone:"+963936170935",lat:33.45,lng:36.23,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"rd4",name:"أثاث قدسيا الفاخر",category:"أثاث منزلي",rating:4.4,priceRange:"$$$",priceLevel:3,description:"أثاث فاخر ومفروشات راقية في قدسيا.",address:"ريف دمشق - قدسيا",phone:"+963116721157",lat:33.55,lng:36.22,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"rd5",name:"موكيت الزبداني",category:"موكيت",rating:4.1,priceRange:"$$",priceLevel:2,description:"موكيت وزرابي بجودة عالية.",address:"ريف دمشق - الزبداني",phone:"+963958470182",lat:33.72,lng:36.10,openingHours:"10:00 صباحاً - 8:00 مساءً"},
+    {id:"rd6",name:"ستائر التل",category:"ستائر",rating:4.0,priceRange:"$$",priceLevel:2,description:"تشكيلة واسعة من الستائر والمفروشات القماشية.",address:"ريف دمشق - التل",phone:"+963953425218",lat:33.61,lng:36.31,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"rd7",name:"أثاث المطابخ الحديثة",category:"مطابخ",rating:4.3,priceRange:"$$$",priceLevel:3,description:"مطابخ عصرية بتصاميم عملية.",address:"ريف دمشق - دوما",phone:"+963958292011",lat:33.57,lng:36.41,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"rd8",name:"غرف نوم جرمانا",category:"غرف نوم",rating:4.2,priceRange:"$$$",priceLevel:3,description:"غرف نوم بتصاميم مميزة وخامات عالية.",address:"ريف دمشق - جرمانا",phone:"+963953202056",lat:33.48,lng:36.35,openingHours:"9:00 صباحاً - 8:00 مساءً"},
+    {id:"rd9",name:"إضاءة ريف دمشق",category:"إضاءة",rating:4.0,priceRange:"$$",priceLevel:2,description:"ثريات وإضاءة عصرية.",address:"ريف دمشق - داريا",phone:"+963965614888",lat:33.45,lng:36.24,openingHours:"10:00 صباحاً - 9:00 مساءً"},
+    {id:"rd10",name:"مجالس قدسيا",category:"مجالس",rating:4.3,priceRange:"$$$",priceLevel:3,description:"مجالس عربية فاخرة.",address:"ريف دمشق - قدسيا",phone:"+963954069865",lat:33.55,lng:36.23,openingHours:"9:00 صباحاً - 8:00 مساءً"}
+];
+
+// ============ ARTICLES ============
+const articles = [
+    {
+        id: 1,
+        title: "تاريخ صناعة الأثاث السوري: من التراث إلى العالمية",
+        description: "رحلة صناعة الأثاث والمفروشات السورية عبر العصور.",
+        image: "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg",
+        author: "mobitex",
+        date: "2026-06-20",
+        category: "تراث",
+        content: "تعتبر صناعة الأثاث والمفروشات السورية من أقدم الصناعات الحرفية في العالم. يشتهر الأثاث الدمشقي والحلبي بجودته العالية وتفاصيله الدقيقة. تستخدم الأخشاب الطبيعية مثل الجوز والزان والبلوط في صناعة القطع الفاخرة. وتتميز المفروشات السورية بالنقوش العربية والزخارف الإسلامية الأصيلة. دمشق وحلب هما مركزا صناعة الأثاث الفاخر في سوريا."
+    },
+    {
+        id: 2,
+        title: "دليل اختيار غرف النوم المثالية",
+        description: "نصائح لاختيار غرفة نوم مريحة وجميلة تناسب ذوقك.",
+        image: "https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg",
+        author: "mobitex",
+        date: "2026-06-18",
+        category: "دليلك",
+        content: "اختيار غرفة النوم المناسبة يتطلب النظر إلى عدة عوامل: حجم الغرفة، نوع الخشب، لون الدهان، جودة المراتب، وتوزيع الأثاث. الألوان الفاتحة تعطي شعوراً بالاتساع والهدوء. الخشب الطبيعي يعطي طابعاً فخماً ويدوم طويلاً."
+    },
+    {
+        id: 3,
+        title: "أحدث صيحات الديكور المنزلي لعام 2026",
+        description: "تعرف على أحدث اتجاهات الديكور والمفروشات المنزلية.",
+        image: "https://images.pexels.com/photos/1350789/pexels-photo-1350789.jpeg",
+        author: "mobitex",
+        date: "2026-06-15",
+        category: "ديكور",
+        content: "تتجه صيحات الديكور لعام 2026 نحو البساطة والطبيعة والاستدامة. الألوان الترابية، الأخشاب الطبيعية، والمواد الصديقة للبيئة هي الأكثر طلباً. كما يعود الطراز العربي الأصيل بقوة في المجالس والزوايا المنزلية."
+    },
+    {
+        id: 4,
+        title: "أفضل محلات الأثاث في دمشق",
+        description: "جولة في أشهر معارض المفروشات في العاصمة السورية.",
+        image: "https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg",
+        author: "mobitex",
+        date: "2026-06-12",
+        category: "دليلك",
+        content: "دمشق تعج بمعارض الأثاث والمفروشات الفاخرة. منطقة المالكي والجاحظ تحتضنان أفخم المعارض والمحلات المتخصصة في الأثاث والموكيت والستائر والديكور. mobitex يقدم لك دليلاً شاملاً لأفضل هذه المحلات."
+    }
+];
+
+// ============ GENERATE STORES ============
+const storeNames = ['معرض الأثاث', 'عالم المفروشات', 'الدار الفاخرة', 'أثاث الشرق', 'المجد للأثاث', 'النخبة', 'الرواسي', 'الأمير', 'السلطان', 'الزاهية', 'بهاء الدين', 'الفردوس', 'الجوهرة', 'السمو', 'الرؤية', 'مفروشات النور', 'أثاث السلام', 'الدارة', 'الإتقان', 'التميز'];
+const adjectives = ['الذهبي', 'الفضي', 'التراثي', 'الحديث', 'الفاخر', 'الرائع', 'المميز', 'الحصري', 'الأنيق', 'العصري', 'الكلاسيكي', 'الرفيع'];
+
+function generateStores(province, count = 50) {
+    const realData = {
+        'دمشق': damascusRealStores,
+        'ريف دمشق': rifDimashqRealStores
+    };
+    
+    if (realData[province]) {
+        return realData[province].map(r => ({
+            ...r,
+            image: imagePool[Math.floor(Math.random() * imagePool.length)] + `?w=600&h=400&random=${Math.random()}`,
+            reviews: [],
+            views: 0
+        }));
+    }
+    
+    const stores = [];
+    const coords = provinceCoords[province] || { lat: 33.5, lng: 36.3 };
+    for (let i = 0; i < count; i++) {
+        const randomName = storeNames[Math.floor(Math.random() * storeNames.length)];
+        const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
+        const category = productCategories[Math.floor(Math.random() * productCategories.length)];
+        const rating = (3.5 + Math.random() * 1.5);
+        const priceLevel = Math.floor(Math.random() * 4) + 1;
+        const priceRange = ['$', '$$', '$$$', '$$$$'][priceLevel - 1];
+        const hourStart = Math.floor(Math.random() * 6 + 8);
+        const hourEnd = Math.floor(Math.random() * 6 + 20);
+        stores.push({
+            id: `${province}_${i}`,
+            name: `${randomName} ${randomAdj}`,
+            category, rating: parseFloat(rating.toFixed(1)), priceRange, priceLevel,
+            description: `✨ أحد أرقى محلات ${province}، يقدم تشكيلة مميزة من ${category} بجودة عالية وأسعار مناسبة.`,
+            address: `${province} - شارع ${['الفرنسي', 'بغداد', 'الجامعة', 'الصالحية', 'المالكي', 'الشام', 'العروبة', 'الجيلاني'][Math.floor(Math.random()*8)]}`,
+            phone: `09${Math.floor(Math.random() * 9000000 + 1000000)}`,
+            image: imagePool[Math.floor(Math.random() * imagePool.length)] + `?w=600&h=400&random=${i}`,
+            openingHours: `${hourStart}:00 صباحاً - ${hourEnd}:00 مساءً`,
+            hourStart, hourEnd,
+            lat: coords.lat + (Math.random() - 0.5) * 0.08,
+            lng: coords.lng + (Math.random() - 0.5) * 0.08,
+            reviews: [],
+            views: 0,
+            website: ''
+        });
+    }
+    return stores;
+}
+
+// ============ ADD MOBITEX FEATURED STORE ============
+const mobitexFeaturedStore = {
+    id: "mobitex_featured",
+    name: "mobitex - السوق الأكبر للمفروشات",
+    category: "مفروشات فاخرة",
+    rating: 4.9,
+    priceRange: "$$$",
+    priceLevel: 3,
+    description: "mobitex هي أكبر منصة للموبيليا والمفروشات السورية. تضم آلاف المحلات والمعارض في 14 محافظة، وتقدم تشكيلة لا مثيل لها من الأثاث والمفروشات والديكور بجودة عالية وأسعار تنافسية.",
+    address: "دمشق - قلب العاصمة",
+    phone: "0113732527",
+    lat: 33.5195,
+    lng: 36.2800,
+    openingHours: "9:00 صباحاً - 10:00 مساءً",
+    hourStart: 9,
+    hourEnd: 22,
+    image: "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?w=600&h=400",
+    reviews: [],
+    views: 1000,
+    website: "https://mobitex.today"
+};
+
+// ============ INIT DATA ============
+const allStores = {};
+provinces.forEach(p => { allStores[p] = generateStores(p, 50); });
+
+// Add mobitex featured store to Damascus
+allStores['دمشق'].unshift(mobitexFeaturedStore);
+
+// ============ FAVORITES ============
+let favorites = JSON.parse(localStorage.getItem('furniture_favorites') || '[]');
+function saveFavorites() { localStorage.setItem('furniture_favorites', JSON.stringify(favorites)); updateFavCount(); }
+function isFavorite(province, storeId) { return favorites.some(f => f.province === province && f.id === storeId); }
+function toggleFavorite(province, storeId, event) {
+    if (event) event.stopPropagation();
+    const idx = favorites.findIndex(f => f.province === province && f.id === storeId);
+    if (idx > -1) { favorites.splice(idx, 1); showToast('تمت الإزالة من المفضلة'); }
+    else { favorites.push({ province, id: storeId }); showToast('تمت الإضافة للمفضلة ❤️'); updatePoints(2, '❤️ إضافة إلى المفضلة'); }
+    saveFavorites(); renderCurrentPage();
+}
+function updateFavCount() {
+    const el = document.getElementById('favCount');
+    el.textContent = favorites.length;
+    el.style.display = favorites.length > 0 ? 'flex' : 'none';
+}
+updateFavCount();
+
+function shareFavorites() {
+    if (favorites.length === 0) { showToast('لا توجد محلات مفضلة للمشاركة'); return; }
+    let shareText = '🛋️ قائمة محلاتي المفضلة على mobitex:\n\n';
+    favorites.forEach(fav => {
+        const store = allStores[fav.province]?.find(r => r.id === fav.id);
+        if (store) {
+            shareText += `📍 ${store.name} - ${fav.province}\n`;
+            shareText += `   ⭐ ${store.rating}/5 | ${store.category}\n`;
+        }
+    });
+    shareText += '\n🔗 اكتشف المزيد: https://mobitex.today/';
+    const encodedText = encodeURIComponent(shareText);
+    window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+}
+
+// ============ POINTS SYSTEM ============
+let userPoints = parseInt(localStorage.getItem('userPoints') || '0');
+let userLevel = 1;
+
+function updatePoints(points, action) {
+    userPoints += points;
+    localStorage.setItem('userPoints', userPoints);
+    updateUserLevel();
+    showPointsNotification(action, points);
+}
+
+function updateUserLevel() {
+    const newLevel = Math.floor(userPoints / 100) + 1;
+    if (newLevel > userLevel) {
+        userLevel = newLevel;
+        showToast(`🎉 تهانينا! وصلت إلى المستوى ${userLevel}`);
+    }
+    userLevel = newLevel;
+}
+
+function showPointsNotification(action, points) {
+    const notification = document.createElement('div');
+    notification.className = 'points-notification';
+    notification.innerHTML = `
+        <div class="points-icon">⭐</div>
+        <div class="points-details">
+            <div class="points-action">${action}</div>
+            <div class="points-amount">+${points} نقطة</div>
+        </div>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.style.animation = 'slideDownPoints 0.5s ease forwards';
+        setTimeout(() => notification.remove(), 500);
+    }, 2000);
+}
+
+// ============ BROWSING HISTORY ============
+let browsingHistory = JSON.parse(localStorage.getItem('furniture_browsingHistory') || '[]');
+function trackView(province, storeId) {
+    browsingHistory.push({ province, storeId, timestamp: Date.now() });
+    if (browsingHistory.length > 50) { browsingHistory = browsingHistory.slice(-50); }
+    localStorage.setItem('furniture_browsingHistory', JSON.stringify(browsingHistory));
+    const store = allStores[province]?.find(r => r.id === storeId);
+    if (store) {
+        store.views = (store.views || 0) + 1;
+    }
+}
+
+function getRecommendations() {
+    if (browsingHistory.length === 0) return [];
+    const preferences = { categories: {}, provinces: {}, priceLevels: {} };
+    browsingHistory.forEach(record => {
+        const store = allStores[record.province]?.find(r => r.id === record.storeId);
+        if (store) {
+            preferences.categories[store.category] = (preferences.categories[store.category] || 0) + 1;
+            preferences.provinces[record.province] = (preferences.provinces[record.province] || 0) + 1;
+            preferences.priceLevels[store.priceLevel] = (preferences.priceLevels[store.priceLevel] || 0) + 1;
+        }
+    });
+    const topCategory = Object.keys(preferences.categories).reduce((a,b) => preferences.categories[a] > preferences.categories[b] ? a : b);
+    const topProvince = Object.keys(preferences.provinces).reduce((a,b) => preferences.provinces[a] > preferences.provinces[b] ? a : b);
+    let recommendations = [];
+    for (const p in allStores) {
+        allStores[p].forEach(r => {
+            if (r.category === topCategory && p === topProvince) {
+                const viewed = browsingHistory.some(h => h.province === p && h.storeId === r.id);
+                if (!viewed) { recommendations.push({...r, province: p}); }
+            }
+        });
+    }
+    recommendations.sort((a,b) => b.rating - a.rating);
+    return recommendations.slice(0, 6);
+}
+
+// ============ MOST VIEWED ============
+function getMostViewedStores(limit = 6) {
+    let all = [];
+    for (const p in allStores) {
+        allStores[p].forEach(r => {
+            all.push({...r, province: p});
+        });
+    }
+    all.sort((a,b) => (b.views || 0) - (a.views || 0));
+    return all.slice(0, limit);
+}
+
+// ============ OPEN NOW ============
+function getOpenNowStores(limit = 6) {
+    const now = new Date().getHours();
+    let open = [];
+    for (const p in allStores) {
+        allStores[p].forEach(r => {
+            if (r.hourStart !== undefined && r.hourEnd !== undefined) {
+                const hourStart = r.hourStart || 8;
+                const hourEnd = r.hourEnd || 22;
+                if (now >= hourStart && now < hourEnd) {
+                    open.push({...r, province: p});
+                }
+            }
+        });
+    }
+    open.sort((a,b) => b.rating - a.rating);
+    return open.slice(0, limit);
+}
+
+// ============ STATS ============
+function updateStats() {
+    let totalStores = 0, totalReviews = 0, avgRating = 0;
+    for (const p in allStores) {
+        totalStores += allStores[p].length;
+        allStores[p].forEach(r => {
+            if (r.reviews) {
+                totalReviews += r.reviews.length;
+                const avg = r.reviews.reduce((sum, rev) => sum + rev.rating, 0);
+                if (r.reviews.length > 0) { avgRating += avg / r.reviews.length; }
+            }
+        });
+    }
+    avgRating = avgRating / totalStores || 0;
+    const container = document.getElementById('statsContainer');
+    if (container) {
+        container.innerHTML = `
+            <div class="stat-item"><span class="stat-number">${totalStores.toLocaleString()}</span><span class="stat-label">🛋️ محل</span></div>
+            <div class="stat-item"><span class="stat-number">${provinces.length}</span><span class="stat-label">📍 محافظة</span></div>
+            <div class="stat-item"><span class="stat-number">${totalReviews.toLocaleString()}</span><span class="stat-label">⭐ تقييم</span></div>
+            <div class="stat-item"><span class="stat-number">${avgRating.toFixed(1)}</span><span class="stat-label">🌟 متوسط التقييم</span></div>
+        `;
+    }
+}
+setInterval(updateStats, 30000);
+
+// ============ RENDER PROVINCES ============
+let provincesSwiper;
+function renderProvinces() {
+    document.getElementById('provincesWrapper').innerHTML = provinces.map(p => `
+        <div class="swiper-slide"><div class="province-card" onclick="showCityPage('${p}')">
+            <img src="${provinceImages[p]}" alt="${p}" class="province-image" loading="lazy" data-src="${provinceImages[p]}">
+            <div class="province-card-body">
+                <div class="province-icon"><i class="fas fa-${provinceIcons[p]||'city'}"></i></div>
+                <div class="province-name">${p}</div>
+                <div class="store-count">🛋️ ${allStores[p].length} محل</div>
+            </div>
+        </div></div>
+    `).join('');
+    if (provincesSwiper) provincesSwiper.destroy(true, true);
+    const isMobile = window.innerWidth < 1024;
+    provincesSwiper = new Swiper('#provincesSwiper', {
+        slidesPerView: isMobile ? 1.5 : 3.5, spaceBetween: isMobile ? 10 : 25, loop: true,
+        autoplay: { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true },
+        pagination: { el: '#provincePagination', clickable: true, dynamicBullets: true },
+        navigation: isMobile ? false : { nextEl: '#provinceNext', prevEl: '#provincePrev' },
+        breakpoints: { 480: { slidesPerView: 2 }, 768: { slidesPerView: 2.5 }, 1024: { slidesPerView: 3.5 }, 1280: { slidesPerView: 4.5 } },
+        speed: 600, grabCursor: true,
+    });
+    setTimeout(observeLazyImages, 300);
+}
+
+// ============ SHOW ALL PROVINCES ============
+function showAllProvinces() {
+    document.getElementById('mainPage').style.display = 'none';
+    const container = document.getElementById('cityPagesContainer');
+    container.innerHTML = `
+        <div class="city-page active">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+            <div class="city-header">
+                <h2>🗺️ جميع المحافظات</h2>
+                <p>${provinces.length} محافظة تضم أكثر من 7000 محل مفروشات</p>
+            </div>
+            <div class="province-grid-all">
+                ${provinces.map(p => `
+                    <div class="province-card-large" onclick="showCityPage('${p}')">
+                        <div class="province-card-image">
+                            <img src="${provinceImages[p]}" alt="${p}" loading="lazy" data-src="${provinceImages[p]}">
+                            <div class="province-card-overlay">
+                                <span class="province-name-large">${p}</span>
+                                <span class="store-count-large">${allStores[p].length} محل</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    lastRenderedPage = 'allProvinces';
+    setTimeout(observeLazyImages, 200);
+}
+
+// ============ CREATE STORE CARD ============
+function createStoreCard(province, store, distance = null) {
+    const liked = isFavorite(province, store.id);
+    const distHTML = distance !== null ? `<span class="distance-badge"><i class="fas fa-location-dot"></i> ${distance.toFixed(1)} كم</span>` : '';
+    const starsHTML = '★'.repeat(Math.floor(store.rating)) + (store.rating%1>=0.5?'½':'') + '☆'.repeat(5-Math.ceil(store.rating));
+    const phoneDisplay = store.phone ? `<small style="color:var(--text-secondary);font-size:0.65rem;">📞 ${store.phone}</small>` : '';
+    const websiteDisplay = store.website ? `<small style="color:var(--primary);font-size:0.65rem;"><i class="fas fa-globe"></i> موقع إلكتروني</small>` : '';
+    return `
+        <div class="store-card" onclick="showStoreDetails('${province}', '${store.id}')">
+            <div class="store-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' fill='%23eee'%3E%3Crect width='400' height='300'/%3E%3C/svg%3E" data-src="${store.image}" alt="${store.name}" class="lazy-img" loading="lazy" decoding="async">
+                <div class="rating"><i class="fas fa-star" style="color:#FFBA08"></i> ${store.rating}</div>
+                <button class="favorite-btn ${liked?'liked':''}" onclick="toggleFavorite('${province}', '${store.id}', event)">
+                    <i class="${liked?'fas':'far'} fa-heart"></i>
+                </button>
+            </div>
+            <div class="store-info">
+                <h3>${store.name} ${distHTML}</h3>
+                <div class="store-category"><i class="fas fa-tag"></i> ${store.category}</div>
+                <div class="star-rating-small">${starsHTML}</div>
+                ${phoneDisplay}
+                ${websiteDisplay}
+                <div class="store-footer">
+                    <span class="price-range">${store.priceRange}</span>
+                    <button class="btn-details" onclick="event.stopPropagation(); showStoreDetails('${province}', '${store.id}')">تفاصيل 📖</button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ============ SKELETON LOADING ============
+function showSkeletonLoading(container, count = 6) {
+    const skeletons = Array(count).fill(0).map(() => `
+        <div class="skeleton-card">
+            <div class="skeleton-image skeleton"></div>
+            <div class="skeleton-text skeleton"></div>
+            <div class="skeleton-text skeleton short"></div>
+            <div class="skeleton-text skeleton medium"></div>
+        </div>
+    `).join('');
+    container.innerHTML = skeletons;
+}
+
+// ============ CITY PAGE ============
+let currentProvince = null, lastRenderedPage = null;
+let activeFilters = { category: 'all', price: 'all', hours: 'all', sort: 'default', search: '' };
+let advancedFilters = { rating: 0, delivery: false, parking: false, open24: false };
+
+window.showCityPage = function(province) {
+    document.getElementById('mainPage').style.display = 'none';
+    renderCityPage(province);
+};
+
+function renderCityPage(province, filters = {}) {
+    activeFilters = { ...activeFilters, ...filters };
+    let stores = [...allStores[province]];
+    if (activeFilters.category !== 'all') stores = stores.filter(r => r.category === activeFilters.category);
+    if (activeFilters.price === 'budget') stores = stores.filter(r => r.priceLevel <= 2);
+    else if (activeFilters.price === 'mid') stores = stores.filter(r => r.priceLevel === 3);
+    else if (activeFilters.price === 'luxury') stores = stores.filter(r => r.priceLevel >= 4);
+    if (activeFilters.hours === 'open') {
+        const now = new Date().getHours();
+        stores = stores.filter(r => now >= r.hourStart && now < r.hourEnd);
+    }
+    if (activeFilters.sort === 'rating') stores.sort((a,b) => b.rating - a.rating);
+    else if (activeFilters.sort === 'price_low') stores.sort((a,b) => a.priceLevel - b.priceLevel);
+    else if (activeFilters.sort === 'price_high') stores.sort((a,b) => b.priceLevel - a.priceLevel);
+    else if (activeFilters.sort === 'nearest' && userLocation) {
+        stores.forEach(r => r._distance = getDistance(userLocation.lat, userLocation.lng, r.lat, r.lng));
+        stores.sort((a,b) => a._distance - b._distance);
+    }
+    
+    if (advancedFilters.rating > 0) stores = stores.filter(r => r.rating >= advancedFilters.rating);
+    
+    currentProvince = province;
+    const container = document.getElementById('cityPagesContainer');
+    
+    const gridHtml = stores.map(r => createStoreCard(province, r, activeFilters.sort==='nearest'&&userLocation?r._distance:null)).join('');
+    
+    container.innerHTML = `
+        <div class="city-page active">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+            <div class="city-header"><h2>📍 ${province}</h2><p>🌟 ${stores.length} محل ${province === 'دمشق' || province === 'ريف دمشق' ? 'حقيقي' : ''}</p></div>
+            
+            <button class="advanced-filter-toggle" onclick="toggleAdvancedFilters()">
+                <i class="fas fa-sliders-h"></i> تصفية متقدمة
+            </button>
+            <div class="advanced-filters" id="advancedFilters" style="display:none;">
+                <div class="filter-group">
+                    <label>⭐ التقييم</label>
+                    <div class="rating-filter">
+                        <button class="rating-btn ${advancedFilters.rating===4?'active':''}" data-rating="4" onclick="filterByRating(4)">4+ ★</button>
+                        <button class="rating-btn ${advancedFilters.rating===3?'active':''}" data-rating="3" onclick="filterByRating(3)">3+ ★</button>
+                        <button class="rating-btn ${advancedFilters.rating===2?'active':''}" data-rating="2" onclick="filterByRating(2)">2+ ★</button>
+                        <button class="rating-btn ${advancedFilters.rating===0?'active':''}" data-rating="0" onclick="filterByRating(0)">الكل</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-bar">
+                <select class="filter-select" onchange="applyFilter('category', this.value)">
+                    <option value="all">كل المنتجات</option>
+                    ${productCategories.map(c => `<option value="${c}" ${activeFilters.category===c?'selected':''}>${c}</option>`).join('')}
+                </select>
+                <select class="filter-select" onchange="applyFilter('price', this.value)">
+                    <option value="all">كل الأسعار</option>
+                    <option value="budget">💰 اقتصادي</option>
+                    <option value="mid">💰💰 متوسط</option>
+                    <option value="luxury">💰💰💰 فاخر</option>
+                </select>
+                <button class="filter-btn ${activeFilters.hours==='open'?'active':''}" onclick="applyFilter('hours', activeFilters.hours==='open'?'all':'open')">🕐 مفتوح الآن</button>
+                <select class="filter-select sort" onchange="applyFilter('sort', this.value)" style="background:var(--accent);color:white;border-color:var(--accent);">
+                    <option value="default" ${activeFilters.sort==='default'?'selected':''}>الافتراضي</option>
+                    <option value="rating" ${activeFilters.sort==='rating'?'selected':''}>الأعلى تقييماً</option>
+                    <option value="price_low" ${activeFilters.sort==='price_low'?'selected':''}>الأقل سعراً</option>
+                    <option value="price_high" ${activeFilters.sort==='price_high'?'selected':''}>الأعلى سعراً</option>
+                </select>
+                <button class="filter-btn reset" onclick="resetFilters()">✕ إعادة</button>
+            </div>
+            
+            <div class="stores-grid" id="cityStoresGrid">${gridHtml}</div>
+        </div>
+    `;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(observeLazyImages, 200);
+}
+
+function toggleAdvancedFilters() {
+    const panel = document.getElementById('advancedFilters');
+    if (!panel) return;
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+}
+
+function filterByRating(rating) {
+    advancedFilters.rating = rating;
+    document.querySelectorAll('.rating-btn').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.rating) === rating);
+    });
+    if (currentProvince) renderCityPage(currentProvince);
+}
+
+function applyFilter(key, value) { if (currentProvince) { activeFilters[key] = value; renderCityPage(currentProvince); } }
+function resetFilters() { 
+    activeFilters = { category: 'all', price: 'all', hours: 'all', sort: 'default', search: '' };
+    advancedFilters = { rating: 0, delivery: false, parking: false, open24: false };
+    document.querySelectorAll('.rating-btn').forEach(btn => btn.classList.remove('active'));
+    if (currentProvince) renderCityPage(currentProvince); 
+}
+
+// ============ SHOW FAVORITES ============
+function showFavorites() {
+    if (favorites.length === 0) { showToast('لا توجد محلات مفضلة'); return; }
+    document.getElementById('mainPage').style.display = 'none';
+    const container = document.getElementById('cityPagesContainer');
+    let html = '';
+    favorites.forEach(fav => {
+        const store = allStores[fav.province]?.find(r => r.id === fav.id);
+        if (store) html += createStoreCard(fav.province, store);
+    });
+    container.innerHTML = `
+        <div class="city-page active">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+            <div class="city-header">
+                <h2>❤️ محلاتي المفضلة</h2>
+                <button class="share-list-btn" onclick="shareFavorites()" style="background:var(--primary);color:white;border:none;padding:6px 16px;border-radius:50px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:0.75rem;margin-top:6px;">
+                    <i class="fas fa-share-alt"></i> مشاركة القائمة
+                </button>
+            </div>
+            <div class="stores-grid">${html}</div>
+        </div>
+    `;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(observeLazyImages, 200);
+    lastRenderedPage = 'favorites';
+}
+
+// ============ ABOUT SYRIA ============
+window.showAboutSyria = function() {
+    document.getElementById('mainPage').style.display = 'none';
+    const container = document.getElementById('cityPagesContainer');
+    const landmarks = 'الجامع الأموي (دمشق)، قلعة حلب، قلعة الحصن (حمص)، النواعير (حماة)، أوغاريت (اللاذقية)، جزيرة أرواد (طرطوس)';
+    const facts = 'المساحة: 185,180 كم² | السكان: ~22 مليون | العاصمة: دمشق | اللغة: العربية | العملة: الليرة السورية';
+    container.innerHTML = `
+        <div class="about-page city-page active">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+            <div class="about-hero">
+                <h1>عن سوريا - أرض الحضارات والصناعات الحرفية</h1>
+                <p>مهد أقدم الحضارات في العالم ومركز صناعة الأثاث والمفروشات الفاخرة</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card"><h3>📜 لمحة تاريخية</h3><p>سوريا من أقدم مناطق العالم المأهولة، تشتهر بصناعة الأثاث الخشبي والمفروشات اليدوية منذ آلاف السنين.</p></div>
+                <div class="about-card"><h3>🛋️ صناعة المفروشات السورية</h3><p>تعتبر صناعة الأثاث والمفروشات من أعرق الصناعات السورية. تشتهر دمشق وحلب بالأثاث الفاخر، بينما تشتهر مناطق أخرى بالسجاد والموكيت اليدوي.</p></div>
+                <div class="about-card"><h3>🏛️ أشهر المعالم</h3><p>${landmarks}</p></div>
+                <div class="about-card"><h3>📊 حقائق سريعة</h3><p>${facts}</p></div>
+            </div>
+            <h2 class="section-title">🗺️ المحافظات السورية</h2>
+            <div class="province-detail-grid">
+                ${provinces.map(p => {
+                    const info = provinceInfo[p] || { desc: '', famous: '' };
+                    return `
+                        <div class="province-detail-card" onclick="showCityPage('${p}')">
+                            <img src="${provinceImages[p]}" alt="${p}" loading="lazy" data-src="${provinceImages[p]}">
+                            <div class="detail-body">
+                                <h4><i class="fas fa-${provinceIcons[p]||'city'}" style="color:var(--primary);margin-left:5px;"></i> ${p}</h4>
+                                <p>${info.desc}</p>
+                                <p style="margin-top:4px;font-weight:500;color:var(--primary);font-size:0.68rem;">🏛️ ${info.famous}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(observeLazyImages, 200);
+    lastRenderedPage = 'about';
+};
+
+// ============ ARTICLES ============
+function showArticlesPage() {
+    document.getElementById('mainPage').style.display = 'none';
+    const container = document.getElementById('cityPagesContainer');
+    container.innerHTML = `
+        <div class="city-page active">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+            <div class="city-header">
+                <h2>📚 مقالات عن المفروشات والديكور</h2>
+                <p>اكتشف أحدث صيحات الأثاث والمفروشات السورية</p>
+            </div>
+            <div class="articles-grid">
+                ${articles.map(article => `
+                    <div class="article-card" onclick="showArticle(${article.id})">
+                        <div class="article-image">
+                            <img src="${article.image}" alt="${article.title}" loading="lazy" data-src="${article.image}">
+                            <span class="article-category">${article.category}</span>
+                        </div>
+                        <div class="article-content">
+                            <h3>${article.title}</h3>
+                            <p>${article.description}</p>
+                            <div class="article-meta">
+                                <span><i class="far fa-calendar-alt"></i> ${article.date}</span>
+                                <span><i class="far fa-user"></i> ${article.author}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(observeLazyImages, 200);
+    lastRenderedPage = 'articles';
+}
+
+function showArticle(id) {
+    const article = articles.find(a => a.id === id);
+    if (!article) return;
+    document.getElementById('mainPage').style.display = 'none';
+    const container = document.getElementById('cityPagesContainer');
+    container.innerHTML = `
+        <div class="city-page active">
+            <button class="back-btn" onclick="showArticlesPage()"><i class="fas fa-arrow-right"></i> العودة للمقالات</button>
+            <article class="article-full">
+                <h1 class="article-full-title">${article.title}</h1>
+                <div class="article-full-meta">
+                    <span><i class="far fa-calendar-alt"></i> ${article.date}</span>
+                    <span><i class="far fa-user"></i> ${article.author}</span>
+                    <span><i class="fas fa-tag"></i> ${article.category}</span>
+                </div>
+                <img src="${article.image}" alt="${article.title}" class="article-full-image">
+                <div class="article-full-content">
+                    ${article.content.split('\n').map(p => `<p>${p}</p>`).join('')}
+                </div>
+                <div class="article-share">
+                    <h4>شارك المقال</h4>
+                    <div class="share-buttons">
+                        <button class="share-btn whatsapp" onclick="shareArticle('${article.title}', 'whatsapp')">
+                            <i class="fab fa-whatsapp"></i> واتساب
+                        </button>
+                        <button class="share-btn facebook" onclick="shareArticle('${article.title}', 'facebook')">
+                            <i class="fab fa-facebook-f"></i> فيسبوك
+                        </button>
+                        <button class="share-btn telegram" onclick="shareArticle('${article.title}', 'telegram')">
+                            <i class="fab fa-telegram-plane"></i> تلغرام
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    `;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function shareArticle(title, platform) {
+    const url = window.location.href;
+    const text = `📖 اقرأ مقال: ${title} على mobitex`;
+    const shareUrls = {
+        whatsapp: `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`,
+        telegram: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`
+    };
+    window.open(shareUrls[platform], '_blank');
+}
+
+// ============ MAP VIEW ============
+let map = null;
+let mapMarkers = [];
+
+function showMapView() {
+    document.getElementById('mainPage').style.display = 'none';
+    const container = document.getElementById('cityPagesContainer');
+    let allStoresList = [];
+    for (const p in allStores) {
+        allStores[p].forEach(r => {
+            allStoresList.push({
+                ...r,
+                province: p,
+                lat: r.lat || provinceCoords[p]?.lat + (Math.random() - 0.5) * 0.05,
+                lng: r.lng || provinceCoords[p]?.lng + (Math.random() - 0.5) * 0.05
+            });
+        });
+    }
+    container.innerHTML = `
+        <div class="city-page active">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+            <div class="city-header">
+                <h2>🗺️ خريطة المحلات</h2>
+                <p>${allStoresList.length} محل موزع على ${provinces.length} محافظة</p>
+            </div>
+            <div id="mapContainer"></div>
+            <div class="map-filters">
+                <select id="mapProvinceFilter" onchange="filterMapByProvince(this.value)">
+                    <option value="all">جميع المحافظات</option>
+                    ${provinces.map(p => `<option value="${p}">${p}</option>`).join('')}
+                </select>
+                <select id="mapCategoryFilter" onchange="filterMapByCategory(this.value)">
+                    <option value="all">جميع المنتجات</option>
+                    ${productCategories.map(c => `<option value="${c}">${c}</option>`).join('')}
+                </select>
+            </div>
+        </div>
+    `;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+        const mapContainer = document.getElementById('mapContainer');
+        if (mapContainer && typeof L !== 'undefined') {
+            if (map) { map.remove(); map = null; }
+            map = L.map('mapContainer').setView([34.8, 37.5], 7);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            mapMarkers = [];
+            const allData = [];
+            for (const p in allStores) {
+                allStores[p].forEach(r => {
+                    allData.push({
+                        ...r,
+                        province: p,
+                        lat: r.lat || provinceCoords[p]?.lat + (Math.random() - 0.5) * 0.05,
+                        lng: r.lng || provinceCoords[p]?.lng + (Math.random() - 0.5) * 0.05
+                    });
+                });
+            }
+            allData.forEach(r => {
+                const marker = L.marker([r.lat, r.lng]).addTo(map);
+                marker.bindPopup(`
+                    <b>${r.name}</b><br>
+                    ${r.category}<br>
+                    ⭐ ${r.rating}/5<br>
+                    📍 ${r.province}<br>
+                    ${r.website ? `<a href="${r.website}" target="_blank" style="color:#2D6FAF;">🛋️ موقع إلكتروني</a><br>` : ''}
+                    <button onclick="showStoreDetails('${r.province}','${r.id}');closeModal();" style="background:#2D6FAF;color:white;border:none;padding:4px 12px;border-radius:20px;cursor:pointer;">عرض التفاصيل</button>
+                `);
+                marker._store = { province: r.province, id: r.id };
+                mapMarkers.push(marker);
+            });
+            map.invalidateSize();
+        } else {
+            mapContainer.innerHTML = `
+                <div style="padding:20px;text-align:center;background:var(--bg-input);border-radius:var(--radius);height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                    <i class="fas fa-map" style="font-size:3rem;color:var(--primary);margin-bottom:10px;"></i>
+                    <h4 style="color:var(--text);">خريطة المحلات التفاعلية</h4>
+                    <p style="color:var(--text-secondary);font-size:0.75rem;">${allStoresList.length} محل متاح</p>
+                </div>
+            `;
+        }
+    }, 300);
+    lastRenderedPage = 'map';
+}
+
+function filterMapByProvince(province) {
+    if (!map || !mapMarkers.length) return;
+    mapMarkers.forEach(marker => {
+        const store = marker._store;
+        if (!store) return;
+        if (province === 'all' || store.province === province) {
+            marker.addTo(map);
+        } else {
+            map.removeLayer(marker);
+        }
+    });
+}
+
+function filterMapByCategory(category) {
+    if (!map || !mapMarkers.length) return;
+    mapMarkers.forEach(marker => {
+        const store = marker._store;
+        if (!store) return;
+        const storeData = allStores[store.province]?.find(r => r.id === store.id);
+        if (!storeData) return;
+        if (category === 'all' || storeData.category === category) {
+            marker.addTo(map);
+        } else {
+            map.removeLayer(marker);
+        }
+    });
+}
+
+// ============ NEARBY ============
+let userLocation = null;
+
+function findNearbyStores() {
+    const btn = document.getElementById('nearbyBtn');
+    btn.classList.add('loading');
+    if (!navigator.geolocation) { showToast('لم نتمكن من الوصول لموقعك'); btn.classList.remove('loading'); return; }
+    navigator.geolocation.getCurrentPosition(
+        pos => { userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude }; displayNearbyStores(); btn.classList.remove('loading'); },
+        err => { showToast('لم نتمكن من الوصول لموقعك'); btn.classList.remove('loading'); },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+    );
+}
+
+function getDistance(lat1, lng1, lat2, lng2) {
+    const R = 6371;
+    const dLat = (lat2-lat1)*Math.PI/180, dLng = (lng2-lng1)*Math.PI/180;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function displayNearbyStores() {
+    if (!userLocation) return;
+    let all = [];
+    for (const p in allStores) {
+        allStores[p].forEach(r => all.push({...r, province: p, distance: getDistance(userLocation.lat, userLocation.lng, r.lat, r.lng)}));
+    }
+    all.sort((a,b) => a.distance - b.distance);
+    if (!all.length) { showToast('لا توجد محلات قريبة'); return; }
+    document.getElementById('mainPage').style.display = 'none';
+    document.getElementById('cityPagesContainer').innerHTML = `
+        <div class="city-page active">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+            <div class="city-header"><h2>📍 أقرب المحلات منك</h2></div>
+            <div class="stores-grid">${all.slice(0,20).map(r => createStoreCard(r.province, r, r.distance)).join('')}</div>
+        </div>
+    `;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(observeLazyImages, 200);
+    lastRenderedPage = 'nearby';
+}
+
+// ============ RANDOM STORE ============
+function showRandomStore() {
+    let allStoresList = [];
+    for (const p in allStores) {
+        allStores[p].forEach(r => { allStoresList.push({...r, province: p}); });
+    }
+    const randomStore = allStoresList[Math.floor(Math.random() * allStoresList.length)];
+    if (randomStore) {
+        showStoreDetails(randomStore.province, randomStore.id);
+        const celebration = document.createElement('div');
+        celebration.className = 'celebration';
+        celebration.innerHTML = '🛋️';
+        celebration.style.cssText = `
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 5rem; z-index: 99999; pointer-events: none;
+            animation: celebrationAnim 1s ease forwards;
+        `;
+        document.body.appendChild(celebration);
+        setTimeout(() => celebration.remove(), 1500);
+    }
+}
+
+// ============ STORE DETAILS ============
+let currentReviewStore = null, currentReviewProvince = null, selectedRating = 0;
+let reviewImages = [];
+let currentCompareList = JSON.parse(localStorage.getItem('furniture_compareList') || '[]');
+
+window.showStoreDetails = function(province, storeId) {
+    const store = allStores[province].find(r => r.id === storeId);
+    if (!store) return;
+    trackView(province, storeId);
+    currentReviewProvince = province; currentReviewStore = storeId; selectedRating = 0; reviewImages = [];
+    document.getElementById('modalTitle').innerHTML = store.name;
+    document.getElementById('modalCategory').innerHTML = `<i class="fas fa-tag"></i> ${store.category}`;
+    document.getElementById('modalRating').innerHTML = `<i class="fas fa-star" style="color:#FFBA08"></i> ${store.rating} / 5 ⭐`;
+    document.getElementById('modalImage').src = store.image;
+    document.getElementById('modalImage').style.display = 'block';
+    document.getElementById('modalDesc').innerHTML = store.description;
+    document.getElementById('modalAddress').innerHTML = `<i class="fas fa-map-marker-alt"></i> 📍 ${store.address}`;
+    document.getElementById('modalPhone').innerHTML = `<i class="fas fa-phone"></i> 📞 ${store.phone || 'غير متوفر'}`;
+    document.getElementById('modalHours').innerHTML = `<i class="fas fa-clock"></i> 🕐 ${store.openingHours}`;
+    document.getElementById('modalPrice').innerHTML = `<i class="fas fa-tag"></i> 💰 ${store.priceRange}`;
+    document.getElementById('modalMap').innerHTML = `<iframe width="100%" height="180" style="border:0;border-radius:15px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${store.lat},${store.lng}&zoom=15&language=ar"></iframe>`;
+    const whatsappMsg = `مرحباً، أرغب بالاستفسار عن منتجاتكم في محل ${store.name} في ${province}%0Aالاسم: [اكتب اسمك]%0Aالاستفسار: [اكتب استفسارك]`;
+    if (store.phone) {
+        document.getElementById('modalWhatsapp').onclick = () => window.open(`https://wa.me/963${store.phone}?text=${whatsappMsg}`, '_blank');
+        document.getElementById('modalWhatsapp').style.display = 'inline-flex';
+    } else {
+        document.getElementById('modalWhatsapp').style.display = 'none';
+    }
+    
+    const websiteBtn = document.createElement('button');
+    websiteBtn.style.cssText = 'background:var(--primary);color:white;border:none;padding:10px 18px;border-radius:50px;cursor:pointer;margin-top:8px;width:100%;font-family:Tajawal,sans-serif;font-size:0.85rem;display:flex;align-items:center;justify-content:center;gap:6px;';
+    websiteBtn.innerHTML = '<i class="fas fa-globe"></i> 🌐 زيارة الموقع الإلكتروني';
+    websiteBtn.onclick = () => { if (store.website) { window.open(store.website, '_blank'); } else { showToast('لا يوجد موقع إلكتروني'); } };
+    const existingBtn = document.querySelector('.website-btn');
+    if (existingBtn) existingBtn.remove();
+    if (store.website) {
+        websiteBtn.className = 'website-btn';
+        document.getElementById('modalWhatsapp').after(websiteBtn);
+    }
+    setupShareButtons(province, store);
+    renderReviews(store);
+    initStarInput();
+    document.getElementById('reviewText').value = '';
+    document.getElementById('imagePreview').innerHTML = '';
+    document.getElementById('reviewImage').value = '';
+    document.getElementById('storeModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+function closeModal() {
+    document.getElementById('storeModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function initStarInput() {
+    const stars = document.querySelectorAll('#starInput i');
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            selectedRating = parseInt(this.dataset.star);
+            stars.forEach(s => s.className = parseInt(s.dataset.star) <= selectedRating ? 'fas fa-star active' : 'far fa-star');
+        });
+    });
+}
+
+function setupShareButtons(province, store) {
+    const shareText = encodeURIComponent(`شاهد محل ${store.name} في ${province} - ${store.category} - تقييم ${store.rating}⭐`);
+    const shareUrl = encodeURIComponent(window.location.href);
+    document.getElementById('shareWhatsapp').onclick = () => { updatePoints(3, '📤 مشاركة عبر واتساب'); window.open(`https://wa.me/?text=${shareText}%20${shareUrl}`, '_blank'); };
+    document.getElementById('shareFacebook').onclick = () => { updatePoints(3, '📤 مشاركة عبر فيسبوك'); window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${shareText}`, '_blank'); };
+    document.getElementById('shareTelegram').onclick = () => { updatePoints(3, '📤 مشاركة عبر تلغرام'); window.open(`https://t.me/share/url?url=${shareUrl}&text=${shareText}`, '_blank'); };
+}
+
+// ============ COMPARE ============
+function addToCompare() {
+    if (!currentReviewProvince || !currentReviewStore) return;
+    const store = allStores[currentReviewProvince]?.find(r => r.id === currentReviewStore);
+    if (!store) return;
+    const exists = currentCompareList.some(item => item.province === currentReviewProvince && item.id === currentReviewStore);
+    if (exists) { showToast('المحل موجود بالفعل في قائمة المقارنة'); return; }
+    if (currentCompareList.length >= 3) { showToast('يمكنك مقارنة 3 محلات كحد أقصى'); return; }
+    currentCompareList.push({ province: currentReviewProvince, id: currentReviewStore });
+    localStorage.setItem('furniture_compareList', JSON.stringify(currentCompareList));
+    showToast('تمت إضافة المحل للمقارنة ⚖️');
+    updateComparePanel();
+}
+
+function removeFromCompare(index) {
+    currentCompareList.splice(index, 1);
+    localStorage.setItem('furniture_compareList', JSON.stringify(currentCompareList));
+    updateComparePanel();
+    if (currentCompareList.length === 0) {
+        document.getElementById('comparePanel').classList.remove('active');
+        document.getElementById('compareResultsContainer').innerHTML = '';
+    }
+}
+
+function updateComparePanel() {
+    const panel = document.getElementById('comparePanel');
+    const items = document.getElementById('compareItems');
+    const count = document.getElementById('compareCount');
+    if (currentCompareList.length === 0) {
+        panel.classList.remove('active');
+        return;
+    }
+    panel.classList.add('active');
+    count.textContent = currentCompareList.length;
+    items.innerHTML = currentCompareList.map((item, index) => {
+        const store = allStores[item.province]?.find(r => r.id === item.id);
+        if (!store) return '';
+        return `
+            <div class="compare-item">
+                <span>${store.name}</span>
+                <span class="remove-compare" onclick="removeFromCompare(${index})">✕</span>
+            </div>
+        `;
+    }).join('');
+}
+
+function clearCompare() {
+    currentCompareList = [];
+    localStorage.setItem('furniture_compareList', JSON.stringify(currentCompareList));
+    document.getElementById('comparePanel').classList.remove('active');
+    document.getElementById('compareResultsContainer').innerHTML = '';
+    showToast('تم مسح قائمة المقارنة');
+}
+
+function showCompareResults() {
+    if (currentCompareList.length < 2) { showToast('الرجاء إضافة محلين على الأقل للمقارنة'); return; }
+    const container = document.getElementById('compareResultsContainer');
+    let tableHTML = `
+        <div class="compare-results active">
+            <h3 style="color:var(--primary);margin-bottom:10px;">⚖️ مقارنة المحلات</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>الميزة</th>
+                        ${currentCompareList.map(item => {
+                            const store = allStores[item.province]?.find(r => r.id === item.id);
+                            return `<th>${store?.name || 'غير معروف'}</th>`;
+                        }).join('')}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>⭐ التقييم</td>
+                        ${currentCompareList.map(item => {
+                            const store = allStores[item.province]?.find(r => r.id === item.id);
+                            return `<td>${store?.rating || 'N/A'}/5</td>`;
+                        }).join('')}
+                    </tr>
+                    <tr>
+                        <td>💰 السعر</td>
+                        ${currentCompareList.map(item => {
+                            const store = allStores[item.province]?.find(r => r.id === item.id);
+                            return `<td>${store?.priceRange || 'N/A'}</td>`;
+                        }).join('')}
+                    </tr>
+                    <tr>
+                        <td>🏷️ التصنيف</td>
+                        ${currentCompareList.map(item => {
+                            const store = allStores[item.province]?.find(r => r.id === item.id);
+                            return `<td>${store?.category || 'N/A'}</td>`;
+                        }).join('')}
+                    </tr>
+                    <tr>
+                        <td>📍 المحافظة</td>
+                        ${currentCompareList.map(item => `<td>${item.province}</td>`).join('')}
+                    </tr>
+                    <tr>
+                        <td>🕐 ساعات العمل</td>
+                        ${currentCompareList.map(item => {
+                            const store = allStores[item.province]?.find(r => r.id === item.id);
+                            return `<td>${store?.openingHours || 'N/A'}</td>`;
+                        }).join('')}
+                    </tr>
+                    <tr>
+                        <td>📞 الهاتف</td>
+                        ${currentCompareList.map(item => {
+                            const store = allStores[item.province]?.find(r => r.id === item.id);
+                            return `<td>${store?.phone || 'N/A'}</td>`;
+                        }).join('')}
+                    </tr>
+                    ${currentCompareList.some(item => {
+                        const store = allStores[item.province]?.find(r => r.id === item.id);
+                        return store?.website;
+                    }) ? `
+                    <tr>
+                        <td>🌐 الموقع الإلكتروني</td>
+                        ${currentCompareList.map(item => {
+                            const store = allStores[item.province]?.find(r => r.id === item.id);
+                            return `<td>${store?.website ? `<a href="${store.website}" target="_blank" style="color:var(--primary);">زيارة</a>` : 'لا يوجد'}</td>`;
+                        }).join('')}
+                    </tr>
+                    ` : ''}
+                </tbody>
+            </table>
+            <button onclick="document.getElementById('compareResultsContainer').innerHTML=''" style="margin-top:10px;background:var(--primary);color:white;border:none;padding:6px 16px;border-radius:50px;cursor:pointer;font-family:'Tajawal',sans-serif;">إغلاق</button>
+        </div>
+    `;
+    container.innerHTML = tableHTML;
+    container.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ============ REVIEW SYSTEM ============
+document.addEventListener('DOMContentLoaded', () => {
+    const reviewInput = document.getElementById('reviewImage');
+    if (reviewInput) {
+        reviewInput.addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            const preview = document.getElementById('imagePreview');
+            files.forEach(file => {
+                if (file.size > 5 * 1024 * 1024) { showToast('الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)'); return; }
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    reviewImages.push(event.target.result);
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.style.cssText = 'width:70px;height:70px;object-fit:cover;border-radius:10px;margin:4px;border:2px solid var(--primary);';
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    }
+});
+
+function submitReview() {
+    if (!currentReviewProvince || !currentReviewStore) return;
+    const text = document.getElementById('reviewText').value.trim();
+    if (!text && selectedRating === 0 && reviewImages.length === 0) { showToast('الرجاء إدخال نص أو اختيار صورة'); return; }
+    const store = allStores[currentReviewProvince].find(r => r.id === currentReviewStore);
+    if (!store) return;
+    const review = {
+        rating: selectedRating,
+        text: text,
+        images: reviewImages.slice(0, 3),
+        date: new Date().toLocaleDateString('ar-SY'),
+        user: 'زائر كريم'
+    };
+    store.reviews.unshift(review);
+    reviewImages = [];
+    document.getElementById('reviewText').value = '';
+    selectedRating = 0;
+    document.querySelectorAll('#starInput i').forEach(s => s.className = 'far fa-star');
+    document.getElementById('imagePreview').innerHTML = '';
+    document.getElementById('reviewImage').value = '';
+    renderReviews(store);
+    updatePoints(5, '📝 تقييم محل');
+    showToast('تم حفظ تقييمك! ⭐');
+}
+
+function renderReviews(store) {
+    const container = document.getElementById('existingReviews');
+    if (!store.reviews || store.reviews.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-secondary);font-size:0.75rem;">لا توجد تقييمات بعد</p>';
+        return;
+    }
+    container.innerHTML = store.reviews.map(r => `
+        <div class="review-item">
+            <div class="review-header">
+                <div class="review-user"><span class="user-icon">👤</span> <span class="user-name">${r.user || 'زائر'}</span></div>
+                <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+                <span class="review-date">${r.date}</span>
+            </div>
+            ${r.text ? `<p class="review-text">${r.text}</p>` : ''}
+            ${r.images && r.images.length > 0 ? `
+                <div class="review-images">${r.images.map(img => `<img src="${img}" alt="صورة التقييم">`).join('')}</div>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+// ============ ADMIN PANEL ============
+function showAdminPanel() {
+    document.getElementById('mainPage').style.display = 'none';
+    document.getElementById('adminPanel').classList.add('active');
+    document.getElementById('cityPagesContainer').innerHTML = '';
+    updateAdminStats();
+    renderAdminReviews();
+}
+
+function closeAdminPanel() {
+    document.getElementById('adminPanel').classList.remove('active');
+    goBack();
+}
+
+function updateAdminStats() {
+    let total = 0, totalReviews = 0, totalViews = 0;
+    for (const p in allStores) {
+        total += allStores[p].length;
+        allStores[p].forEach(r => {
+            if (r.reviews) totalReviews += r.reviews.length;
+            totalViews += (r.views || 0);
+        });
+    }
+    document.getElementById('adminStats').innerHTML = `
+        <div class="stat-item"><span class="stat-number">${total}</span><span class="stat-label">🛋️ محل</span></div>
+        <div class="stat-item"><span class="stat-number">${totalReviews}</span><span class="stat-label">⭐ تقييم</span></div>
+        <div class="stat-item"><span class="stat-number">${totalViews}</span><span class="stat-label">👀 مشاهدة</span></div>
+        <div class="stat-item"><span class="stat-number">${browsingHistory.length}</span><span class="stat-label">📊 زيارات</span></div>
+    `;
+}
+
+function renderAdminReviews() {
+    const container = document.getElementById('adminReviewsList');
+    let allReviews = [];
+    for (const p in allStores) {
+        allStores[p].forEach(r => {
+            if (r.reviews && r.reviews.length > 0) {
+                r.reviews.forEach((rev, idx) => {
+                    allReviews.push({
+                        store: r.name,
+                        province: p,
+                        review: rev,
+                        index: idx,
+                        storeId: r.id
+                    });
+                });
+            }
+        });
+    }
+    if (allReviews.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-secondary);font-size:0.75rem;">لا توجد تقييمات</p>';
+        return;
+    }
+    container.innerHTML = allReviews.map((item, i) => `
+        <div class="admin-list-item">
+            <span><b>${item.store}</b> (${item.province}) - ${'★'.repeat(item.review.rating)}${'☆'.repeat(5-item.review.rating)} ${item.review.text ? item.review.text.substring(0,30)+'...' : ''}</span>
+            <button class="delete-btn" onclick="deleteReview('${item.province}','${item.storeId}',${item.index})">حذف</button>
+        </div>
+    `).join('');
+}
+
+function deleteReview(province, storeId, index) {
+    const store = allStores[province]?.find(r => r.id === storeId);
+    if (!store || !store.reviews || !store.reviews[index]) return;
+    store.reviews.splice(index, 1);
+    renderAdminReviews();
+    showToast('تم حذف التقييم');
+}
+
+function addNewStore(event) {
+    event.preventDefault();
+    const name = document.getElementById('newStoreName').value.trim();
+    const category = document.getElementById('newStoreCategory').value.trim();
+    const province = document.getElementById('newStoreProvince').value.trim();
+    const rating = parseFloat(document.getElementById('newStoreRating').value);
+    const priceRange = document.getElementById('newStorePriceRange').value.trim();
+    const address = document.getElementById('newStoreAddress').value.trim();
+    const phone = document.getElementById('newStorePhone').value.trim();
+    const hours = document.getElementById('newStoreHours').value.trim();
+    const desc = document.getElementById('newStoreDesc').value.trim();
+    const image = document.getElementById('newStoreImage').value.trim() || imagePool[0];
+    
+    if (!name || !category || !province || isNaN(rating) || !priceRange || !address) {
+        showToast('الرجاء ملء جميع الحقول المطلوبة');
+        return;
+    }
+    if (!allStores[province]) {
+        showToast('المحافظة غير موجودة');
+        return;
+    }
+    const priceLevel = { '$':1, '$$':2, '$$$':3, '$$$$':4 }[priceRange] || 2;
+    const coords = provinceCoords[province] || { lat: 33.5, lng: 36.3 };
+    const newStore = {
+        id: `admin_${Date.now()}`,
+        name, category, rating: Math.min(5, Math.max(0, rating)), priceRange, priceLevel,
+        description: desc || `محل ${name} في ${province}`,
+        address, phone, image,
+        openingHours: hours || '10:00 صباحاً - 9:00 مساءً',
+        hourStart: 10, hourEnd: 21,
+        lat: coords.lat + (Math.random() - 0.5) * 0.02,
+        lng: coords.lng + (Math.random() - 0.5) * 0.02,
+        reviews: [],
+        views: 0,
+        website: ''
+    };
+    allStores[province].unshift(newStore);
+    try {
+        const cache = {};
+        for (const p in allStores) {
+            cache[p] = allStores[p].map(r => ({ ...r, reviews: r.reviews ? r.reviews.slice(0, 10) : [] }));
+        }
+        localStorage.setItem('cachedStores', JSON.stringify(cache));
+    } catch (e) {}
+    document.getElementById('addStoreForm').reset();
+    updateAdminStats();
+    showToast(`✅ تم إضافة محل ${name} بنجاح`);
+    updateStats();
+    if (currentProvince) renderCityPage(currentProvince);
+}
+
+// ============ SEARCH ============
+window.globalSearch = function(searchTerm) {
+    if (!searchTerm || !searchTerm.trim()) return;
+    const term = searchTerm.trim().toLowerCase();
+    let results = [];
+    for (const p in allStores) {
+        const found = allStores[p].filter(r => r.name.toLowerCase().includes(term) || r.category.toLowerCase().includes(term) || r.address.toLowerCase().includes(term));
+        results.push(...found.map(r => ({...r, province: p})));
+    }
+    if (!results.length) { showToast('لا توجد نتائج'); return; }
+    document.getElementById('mainPage').style.display = 'none';
+    document.getElementById('cityPagesContainer').innerHTML = `
+        <div class="city-page active">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+            <div class="city-header"><h2>🔍 نتائج البحث: "${term}"</h2></div>
+            <div class="stores-grid">${results.map(r => createStoreCard(r.province, r)).join('')}</div>
+        </div>
+    `;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(observeLazyImages, 200);
+};
+
+// ============ NAVIGATION ============
+function renderCurrentPage() {
+    if (currentProvince) renderCityPage(currentProvince);
+    else if (lastRenderedPage === 'favorites') showFavorites();
+    else if (lastRenderedPage === 'nearby') displayNearbyStores();
+    else if (lastRenderedPage === 'about') showAboutSyria();
+    else if (lastRenderedPage === 'articles') showArticlesPage();
+    else if (lastRenderedPage === 'map') showMapView();
+}
+
+window.goBack = function() {
+    document.getElementById('mainPage').style.display = 'block';
+    document.getElementById('cityPagesContainer').innerHTML = '';
+    document.getElementById('adminPanel').classList.remove('active');
+    currentProvince = null; lastRenderedPage = null;
+    activeFilters = { category: 'all', price: 'all', hours: 'all', sort: 'default', search: '' };
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => { if (provincesSwiper) { provincesSwiper.update(); provincesSwiper.autoplay.start(); } }, 300);
+    renderHomeSections();
+};
+
+// ============ RENDER HOME SECTIONS ============
+function renderHomeSections() {
+    const mostViewed = getMostViewedStores(6);
+    const mvGrid = document.getElementById('mostViewedGrid');
+    if (mostViewed.length > 0 && mvGrid) {
+        mvGrid.innerHTML = mostViewed.map(r => createStoreCard(r.province, r)).join('');
+        setTimeout(observeLazyImages, 200);
+    }
+    
+    const openNow = getOpenNowStores(6);
+    const onGrid = document.getElementById('openNowGrid');
+    if (openNow.length > 0 && onGrid) {
+        onGrid.innerHTML = openNow.map(r => createStoreCard(r.province, r)).join('');
+        setTimeout(observeLazyImages, 200);
+    }
+}
+
+// ============ NOTIFICATIONS ============
+function requestNotificationPermission() {
+    if (!('Notification' in window)) return;
+    if (Notification.permission === 'granted') return true;
+    if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') showToast('🔔 سيتم إعلامك بالعروض والمحلات الجديدة');
+        });
+    }
+    return false;
+}
+
+function sendNotification(title, body) {
+    if (Notification.permission !== 'granted') return;
+    try {
+        const notification = new Notification(title, {
+            body: body,
+            icon: '🛋️',
+            vibrate: [200, 100, 200],
+            tag: 'mobitex',
+            requireInteraction: true
+        });
+        notification.onclick = function() { window.focus(); notification.close(); };
+        setTimeout(() => notification.close(), 10000);
+    } catch (e) {}
+}
+
+// ============ INSTALL PROMPT ============
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const prompt = document.createElement('div');
+    prompt.className = 'install-prompt';
+    prompt.id = 'installPrompt';
+    prompt.innerHTML = `
+        <div class="install-prompt-content">
+            <div class="install-icon">📱</div>
+            <div class="install-text">
+                <h4>ثبّت التطبيق على جهازك</h4>
+                <p>احصل على تجربة أفضل وسرعة أكبر</p>
+            </div>
+            <button class="install-btn" onclick="installApp()">تثبيت</button>
+            <button class="install-close" onclick="this.parentElement.parentElement.remove()">✕</button>
+        </div>
+    `;
+    document.body.appendChild(prompt);
+});
+
+function installApp() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+                document.getElementById('installPrompt')?.remove();
+            }
+            deferredPrompt = null;
+        });
+    }
+}
+
+// ============ KEYBOARD SHORTCUTS ============
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeModal(); closeMobileSearch(); closeMobileMenu(); }
+    if (e.key === 'f' && !e.ctrlKey && !e.metaKey) {
+        if (!document.activeElement?.tagName === 'INPUT') { showFavorites(); }
+    }
+});
+
+// ============ CACHE ============
+function cacheStores() {
+    try {
+        const cache = {};
+        for (const p in allStores) {
+            cache[p] = allStores[p].map(r => ({ ...r, reviews: r.reviews ? r.reviews.slice(0, 10) : [] }));
+        }
+        localStorage.setItem('cachedStores', JSON.stringify(cache));
+    } catch (e) {}
+}
+
+window.addEventListener('online', () => { showToast('🌐 تم استعادة الاتصال بالإنترنت'); cacheStores(); });
+window.addEventListener('offline', () => {
+    showToast('⚠️ أنت غير متصل، يتم عرض البيانات المخزنة');
+    const cached = localStorage.getItem('cachedStores');
+    if (cached) {
+        try {
+            const data = JSON.parse(cached);
+            for (const p in data) {
+                if (!allStores[p] || allStores[p].length === 0) {
+                    allStores[p] = data[p];
+                }
+            }
+            renderCurrentPage();
+        } catch (e) {}
+    }
+});
+
+setInterval(cacheStores, 60000);
+
+// ============ RECOMMENDATIONS ============
+function renderRecommendations() {
+    const recs = getRecommendations();
+    if (recs.length === 0) return;
+    let container = document.querySelector('.recommendations-container');
+    if (!container) {
+        const mainPage = document.getElementById('mainPage');
+        container = document.createElement('div');
+        container.className = 'recommendations-container';
+        container.innerHTML = `<h2 class="section-title">🤖 نوصي لك</h2><div class="stores-grid" id="recGrid"></div>`;
+        const slider = document.querySelector('.provinces-slider-container');
+        if (slider) slider.parentNode.insertBefore(container, slider.nextSibling);
+    }
+    const grid = document.getElementById('recGrid') || container.querySelector('.stores-grid');
+    if (grid) {
+        grid.innerHTML = recs.map(r => createStoreCard(r.province, r)).join('');
+        setTimeout(observeLazyImages, 200);
+    }
+}
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', () => {
+    renderProvinces();
+    updateStats();
+    renderHomeSections();
+    updateComparePanel();
+    document.getElementById('desktopSearch').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') globalSearch(this.value);
+    });
+    setTimeout(renderRecommendations, 1500);
+    requestNotificationPermission();
+    
+    if (Notification.permission === 'granted') {
+        const lastNotification = localStorage.getItem('lastDailyDigest_mobitex');
+        const today = new Date().toDateString();
+        if (lastNotification !== today) {
+            setTimeout(() => {
+                sendNotification('🛋️ اكتشف اليوم', 'أكثر من 7000 محل مفروشات في سوريا ينتظرونك!');
+                localStorage.setItem('lastDailyDigest_mobitex', today);
+            }, 10000);
+        }
+    }
+});
+
+window.addEventListener('resize', () => {
+    if (provincesSwiper) {
+        const isMobile = window.innerWidth < 1024;
+        provincesSwiper.params.navigation = isMobile ? false : { nextEl: '#provinceNext', prevEl: '#provincePrev' };
+        provincesSwiper.update();
+    }
+});
+
+const domObserver = new MutationObserver(() => observeLazyImages());
+domObserver.observe(document.getElementById('cityPagesContainer'), { childList: true, subtree: true });
+
+console.log('🛋️ mobitex - أكبر سوق للموبيليا والمفروشات السورية');
+console.log('📊 عدد المحلات المحملة:', Object.values(allStores).reduce((sum, arr) => sum + arr.length, 0));
+console.log('❤️ عدد المفضلة:', favorites.length);
+console.log('⭐ عدد النقاط:', userPoints);
+console.log('🛋️ mobitex: المنصة الرائدة للمفروشات في سوريا');
+</script>
 </body>
 </html>
